@@ -9,26 +9,21 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
-import uet.oop.bomberman.entities.Bomber;
-import uet.oop.bomberman.entities.Entity;
-import uet.oop.bomberman.entities.Grass;
-import uet.oop.bomberman.entities.Wall;
 import uet.oop.bomberman.graphics.Sprite;
 
-
-import java.util.ArrayList;
-import java.util.List;
 
 
 public class BombermanGame extends Application {
     
     public static final int WIDTH = 30 / 2;
+
     public static final int HEIGHT = 13;
     
     private GraphicsContext gc;
-    private Canvas canvas;
-    private Board board;
 
+    private Canvas canvas;
+
+    private Board board;
 
     public static void main(String[] args) {
         Application.launch(BombermanGame.class);
@@ -36,7 +31,6 @@ public class BombermanGame extends Application {
 
     @Override
     public void start(Stage stage) {
-
         board = new Board();
         // Tao Canvas
         canvas = new Canvas(WIDTH * Sprite.SCALED_SIZE, HEIGHT * Sprite.SCALED_SIZE);
@@ -61,7 +55,9 @@ public class BombermanGame extends Application {
                 board.getBomber().eventHandler(event);
             }
         });
+
         // Them scene vao stage
+        stage.setTitle("Bomberman");
         stage.setScene(scene);
         stage.show();
 
@@ -73,8 +69,6 @@ public class BombermanGame extends Application {
             }
         };
         timer.start();
-
-
     }
 
     public void update() {

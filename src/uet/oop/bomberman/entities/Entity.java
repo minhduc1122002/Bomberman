@@ -1,28 +1,26 @@
 package uet.oop.bomberman.entities;
 
-import javafx.geometry.Rectangle2D;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
-import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import uet.oop.bomberman.Board;
 import uet.oop.bomberman.graphics.Sprite;
 
 public abstract class Entity {
-    //Tọa độ X tính từ góc trái trên trong Canvas
+
     protected int x;
 
-    //Tọa độ Y tính từ góc trái trên trong Canvas
     protected int y;
 
     protected Image img;
 
+    protected boolean remove = false;
+
     private Board board;
 
-    //Khởi tạo đối tượng, chuyển từ tọa độ đơn vị sang tọa độ trong canvas
-    public Entity(int xUnit, int yUnit, Image img, Board board) {
-        this.x = xUnit;
-        this.y = yUnit;
+    public Entity(int x, int y, Image img, Board board) {
+        this.x = x;
+        this.y = y;
         this.img = img;
         this.board = board;
     }
@@ -35,8 +33,16 @@ public abstract class Entity {
         return x;
     }
 
-    public void setX(int x) {
-        this.x = x;
+    public void remove() {
+        remove = true;
+    }
+
+    public boolean isRemove() {
+        return remove;
+    }
+
+    public Board getBoard() {
+        return board;
     }
 
     public void setY(int y) {
@@ -51,22 +57,9 @@ public abstract class Entity {
         return new Rectangle(x, y, Sprite.SCALED_SIZE, Sprite.SCALED_SIZE);
     }
 
-    public boolean intersects(Entity e) {
-        return e.getBoundary().intersects(this.getBoundary().getLayoutBounds());
-    }
+    public abstract void render(GraphicsContext gc);
 
-    protected boolean collisionWithTile(int x, int y){
-        return board.getLevel().getTileAt(x, y).isSolid();
-    }
+    public abstract boolean collide(Entity e);
 
-    public void render(GraphicsContext gc, int xOffset, int yOffset) {
-        /*Rectangle rect = this.getBoundary();
-        gc.fillRect(rect.getX() - xOffset,
-                rect.getY() - yOffset,
-                rect.getWidth(),
-                rect.getHeight());
-        gc.setFill(Color.GREEN);*/
-        gc.drawImage(img, x - xOffset, y - yOffset);
-    }
     public abstract void update();
 }

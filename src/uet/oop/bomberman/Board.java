@@ -1,10 +1,12 @@
 package uet.oop.bomberman;
 
-
 import javafx.scene.canvas.GraphicsContext;
 import uet.oop.bomberman.entities.*;
+import uet.oop.bomberman.entities.bomb.Bomb;
+import uet.oop.bomberman.entities.bomb.Flame;
+import uet.oop.bomberman.graphics.Sprite;
 import uet.oop.bomberman.level.Level;
-
+import uet.oop.bomberman.entities.Character;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -12,7 +14,9 @@ import java.util.List;
 
 public class Board {
 
-    private List<Entity> entities = new ArrayList<>();
+    private List<Character> characters = new ArrayList<>();
+
+    private List<Bomb> bombs = new ArrayList<>();
 
     private Level level;
 
@@ -23,6 +27,13 @@ public class Board {
         camera = new Camera(this, 0,0);
     }
 
+    public void nextLevel() {
+        if (!(level.getLevel() + 1 > Level.MAX_LEVEL)) {
+            clear();
+            level = new Level(this, level.getLevel() + 1);
+        }
+    }
+
     public Camera getCamera() {
         return camera;
     }
@@ -31,30 +42,114 @@ public class Board {
         return level;
     }
 
-    public void addBomber(Bomber bomber) {
-        entities.add(bomber);
+    public void addCharacter(Character character) {
+        characters.add(character);
+    }
+
+    public void addBomb(Bomb bomb) {
+        bombs.add(bomb);
     }
 
     public void render(GraphicsContext gc) {
-        level.render(gc, camera.getX(), camera.getY());
-        entities.forEach(g -> g.render(gc, camera.getX(), camera.getY()));
+        level.render(gc);
+        bombs.forEach(g -> g.render(gc));
+        characters.forEach(g -> g.render(gc));
     }
 
     public void update() {
-        entities.forEach(g -> g.update());
+        for (int i = 0; i < bombs.size(); i++) {
+            bombs.get(i).update();
+            if (bombs.get(i).isRemove()) {
+                bombs.remove(i);
+                i--;
+            }
+        }
+        for (int i = 0; i < characters.size(); i++) {
+            characters.get(i).update();
+            if (characters.get(i).isRemove()) {
+                characters.remove(i);
+                i--;
+            }
+        }
+        level.update();
     }
 
     public Bomber getBomber() {
-        Iterator<Entity> itr = entities.iterator();
-
+        Iterator<Character> itr = characters.iterator();
         Entity cur;
         while(itr.hasNext()) {
             cur = itr.next();
-
-            if(cur instanceof Bomber)
+            if(cur instanceof Bomber) {
                 return (Bomber) cur;
+            }
         }
-
         return null;
+    }
+
+    public Character getCharacterAtExcluding(int x, int y, Character a) {
+        Iterator<Character> itr = characters.iterator();
+        Character cur;
+        while(itr.hasNext()) {
+            cur = itr.next();
+            if (cur == a) {
+                continue;
+            }
+            if ((cur.getX() + Sprite.SCALED_SIZE / 2) / Sprite.SCALED_SIZE == x && (cur.getY() + Sprite.SCALED_SIZE / 2 ) / Sprite.SCALED_SIZE == y) {
+                return cur;
+            }
+        }
+        return null;
+    }
+
+    public void clear() {
+        characters.clear();
+        bombs.clear();
+    }
+
+    public List<Bomb> getBombs() {
+        return bombs;
+    }
+
+    public Bomb getBombAt(int x, int y) {
+        Iterator<Bomb> bs = bombs.iterator();
+        Bomb b;
+        while(bs.hasNext()) {
+            b = bs.next();
+            if(b.getX() == x * Sprite.SCALED_SIZE && b.getY() == y * Sprite.SCALED_SIZE) {
+                return b;
+            }
+        }
+        return null;
+    }
+
+    public Flame getFlameAt(int x, int y) {
+        Iterator<Bomb> bs = bombs.iterator();
+        Bomb b;
+        while(bs.hasNext()) {
+            b = bs.next();
+            Flame e = b.flameAt(x * Sprite.SCALED_SIZE, y * Sprite.SCALED_SIZE);
+            if(e != null) {
+                return e;
+            }
+        }
+        return null;
+    }
+
+    public Entity getEntityAt(int x, int y, Character except) {
+        Entity e = null;
+        e = getFlameAt(x, y);
+        if (e != null) {
+            return e;
+        }
+        e = getBombAt(x, y);
+        if (e != null) {
+            return e;
+        }
+        e = getCharacterAtExcluding(x, y, except);
+        if (e != null) {
+            return e;
+        }
+        e = level.getTileAt(x, y);
+        return e;
     }
 }

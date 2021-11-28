@@ -1,89 +1,156 @@
 package uet.oop.bomberman.entities;
 
-import javafx.scene.SnapshotParameters;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import uet.oop.bomberman.Board;
+import uet.oop.bomberman.entities.bomb.Bomb;
+import uet.oop.bomberman.entities.bomb.Flame;
+import uet.oop.bomberman.entities.enemy.Enemy;
 import uet.oop.bomberman.graphics.Sprite;
 
-public class Bomber extends Entity {
-    public static final int RIGHT = 0;
-    public static final int LEFT = 1;
-    public static final int UP = 2;
-    public static final int DOWN = 3;
+public class Bomber extends Character {
 
-    private boolean[]directions;
+    private int flameLength = 1;
 
-    private int speed = 2;
+    private int bombRate = 1;
+
+    private int speed = 4;
+
+    private int animate = 0;
 
     public Bomber(int x, int y, Image img, Board board) {
         super( x, y, img, board);
-        directions = new boolean[4];
-        for (int i = 0; i < 4; i++) {
-            directions[i] = false;
+        direction = -1;
+        alive = true;
+    }
+
+    @Override
+    public void kill() {
+        if (!alive) return;
+        alive = false;
+    }
+
+    @Override
+    public void afterKill() {
+        if (timeAfterKill > 0) {
+            setImg(Sprite.movingSprite(Sprite.player_dead1, Sprite.player_dead2, Sprite.player_dead3, animate, 60).getFxImage());
+            timeAfterKill--;
+        } else {
+            reset();
         }
     }
 
     @Override
     public void update() {
-        move();
+        if (alive) {
+            move();
+        } else {
+            afterKill();
+        }
         animation();
     }
 
     @Override
     public Rectangle getBoundary() {
-        return new Rectangle(x + 4, y + 4, Sprite.SCALED_SIZE - 20, Sprite.SCALED_SIZE - 8);
+        return new Rectangle(x + 4, y + 6, Sprite.SCALED_SIZE - 20, Sprite.SCALED_SIZE - 12);
+    }
+
+    @Override
+    public boolean collide(Entity e) {
+        if(e instanceof Flame) {
+            kill();
+            return false;
+        }
+        if(e instanceof Enemy) {
+            kill();
+            return false;
+        }
+        return false;
+    }
+
+    @Override
+    public void render(GraphicsContext gc) {
+        int xOffset = getBoard().getCamera().getX();
+        int yOffset = getBoard().getCamera().getY();
+        gc.drawImage(img, x - xOffset, y - yOffset);
+    }
+
+    /** test **/
+    private void reset() {
+        x = Sprite.SCALED_SIZE;
+        y = Sprite.SCALED_SIZE;
+        setImg(Sprite.player_right.getFxImage());
+        alive = true;
+        timeAfterKill = 40;
+        direction = -1;
+    }
+
+    public void setFlameLength(int flameLength) {
+        this.flameLength = flameLength;
+    }
+
+    public int getFlameLength() {
+        return flameLength;
+    }
+
+    public int getBombRate() {
+        return bombRate;
     }
 
     public void animation() {
-        if (directions[UP]) {
-            setImg(Sprite.movingSprite(Sprite.player_up, Sprite.player_up_1, Sprite.player_up_2, this.getY(), 80).getFxImage());
-        } else if (directions[DOWN]) {
-            setImg(Sprite.movingSprite(Sprite.player_down, Sprite.player_down_1, Sprite.player_down_2, this.getY(), 80).getFxImage());
-        } else if (directions[LEFT]) {
-            setImg(Sprite.movingSprite(Sprite.player_left, Sprite.player_left_1, Sprite.player_left_2, this.getX(), 80).getFxImage());
-        } else if (directions[RIGHT]) {
-            setImg(Sprite.movingSprite(Sprite.player_right, Sprite.player_right_1, Sprite.player_right_2, this.getX(), 80).getFxImage());
+        if (animate < 7500) {
+            animate ++;
+        } else {
+            animate = 0;
+        }
+        if (alive) {
+            if (direction == UP) {
+                setImg(Sprite.movingSprite(Sprite.player_up, Sprite.player_up_1, Sprite.player_up_2, animate, 30).getFxImage());
+            } else if (direction == DOWN) {
+                setImg(Sprite.movingSprite(Sprite.player_down, Sprite.player_down_1, Sprite.player_down_2, animate, 30).getFxImage());
+            } else if (direction == LEFT) {
+                setImg(Sprite.movingSprite(Sprite.player_left, Sprite.player_left_1, Sprite.player_left_2, animate, 30).getFxImage());
+            } else if (direction == RIGHT) {
+                setImg(Sprite.movingSprite(Sprite.player_right, Sprite.player_right_1, Sprite.player_right_2, animate, 30).getFxImage());
+            }
         }
     }
 
+    @Override
     public void move() {
-        if (directions[RIGHT]) {
+        if (direction == RIGHT) {
             int tx = (int) (speed + getBoundary().getX() + getBoundary().getWidth()) / Sprite.SCALED_SIZE;
-            if (!collisionWithTile(tx, (int) (getBoundary().getY()) / Sprite.SCALED_SIZE) &&
-                    !collisionWithTile(tx, (int) (getBoundary().getY() + getBoundary().getHeight()) / Sprite.SCALED_SIZE)){
+            if (!(getBoard().getEntityAt(tx, (int) (getBoundary().getY()) / Sprite.SCALED_SIZE, this).collide(this))
+                    && !(getBoard().getEntityAt(tx, (int) (getBoundary().getY() + getBoundary().getHeight()) / Sprite.SCALED_SIZE, this).collide(this))) {
                 x += speed;
             } else {
                 x = (int) (tx * Sprite.SCALED_SIZE - getBoundary().getWidth() - 4 - 1);
             }
-        } else if (directions[LEFT]) {
+        } else if (direction == LEFT) {
             int tx = (int) (-speed + getBoundary().getX()) / Sprite.SCALED_SIZE;
-            if (!collisionWithTile(tx, (int) (getBoundary().getY()) / Sprite.SCALED_SIZE) &&
-                    !collisionWithTile(tx, (int) (getBoundary().getY() + getBoundary().getHeight()) / Sprite.SCALED_SIZE)){
+            if (!(getBoard().getEntityAt(tx, (int) (getBoundary().getY()) / Sprite.SCALED_SIZE, this).collide(this))
+                    && !(getBoard().getEntityAt(tx, (int) (getBoundary().getY() + getBoundary().getHeight()) / Sprite.SCALED_SIZE , this).collide(this))) {
                 x -= speed;
             } else {
                 x = (tx * Sprite.SCALED_SIZE + Sprite.SCALED_SIZE - 4);
             }
-        } else if (directions[UP]) {
+        } else if (direction == UP) {
             int ty = (int) (- speed + getBoundary().getY()) / Sprite.SCALED_SIZE;
-            if (!collisionWithTile((int) (getBoundary().getX()) / Sprite.SCALED_SIZE, ty) &&
-                    !collisionWithTile((int) (getBoundary().getX() + getBoundary().getWidth()) / Sprite.SCALED_SIZE, ty)){
+            if (!(getBoard().getEntityAt((int) getBoundary().getX() / Sprite.SCALED_SIZE, ty, this).collide(this))
+                    && !(getBoard().getEntityAt((int) (getBoundary().getX() + getBoundary().getWidth()) / Sprite.SCALED_SIZE, ty, this).collide(this))) {
                 y -= speed;
             } else {
-                y = (int) (ty * Sprite.SCALED_SIZE + Sprite.SCALED_SIZE - 4);
+                y = (int) (ty * Sprite.SCALED_SIZE + Sprite.SCALED_SIZE - 6);
             }
-        } else if (directions[DOWN]) {
+        } else if (direction == DOWN) {
             int ty = (int) (speed + getBoundary().getY() + getBoundary().getHeight()) / Sprite.SCALED_SIZE;
-            if (!collisionWithTile((int) (getBoundary().getX()) / Sprite.SCALED_SIZE, ty) &&
-                    !collisionWithTile((int) (getBoundary().getX() + getBoundary().getWidth()) / Sprite.SCALED_SIZE, ty)){
+            if (!(getBoard().getEntityAt((int) getBoundary().getX() / Sprite.SCALED_SIZE, ty, this).collide(this))
+                    && !(getBoard().getEntityAt((int) (getBoundary().getX() + getBoundary().getWidth()) / Sprite.SCALED_SIZE, ty, this).collide(this))) {
                 y += speed;
             } else {
-                y = (int) (ty * Sprite.SCALED_SIZE - getBoundary().getHeight() - 4 - 1);
+                y = (int) (ty * Sprite.SCALED_SIZE - getBoundary().getHeight() - 6 - 1);
             }
         }
     }
@@ -92,41 +159,49 @@ public class Bomber extends Entity {
         if (event.getEventType() == KeyEvent.KEY_PRESSED) {
             switch (event.getCode()) {
                 case W: {
-                    directions[UP] = true;
+                    direction = UP;
                     break;
                 }
                 case S: {
-                    directions[DOWN] = true;
+                    direction = DOWN;
                     break;
                 }
                 case A: {
-                    directions[LEFT] = true;
+                    direction = LEFT;
                     break;
                 }
                 case D: {
-                    directions[RIGHT] = true;
+                    direction = RIGHT;
+                    break;
+                }
+                case SPACE: {
+                    int xt = (int) ((double) x + Sprite.SCALED_SIZE / 2) / Sprite.SCALED_SIZE;
+                    int yt = (int) ((double) y + Sprite.SCALED_SIZE / 2) / Sprite.SCALED_SIZE;
+                    if (!(getBoard().getBombs().size() == bombRate)) {
+                        getBoard().addBomb(new Bomb(xt * Sprite.SCALED_SIZE , yt * Sprite.SCALED_SIZE, Sprite.bomb.getFxImage(),getBoard()));
+                    }
                     break;
                 }
             }
         } else if (event.getEventType() == KeyEvent.KEY_RELEASED) {
             switch (event.getCode()) {
                 case W: {
-                    directions[UP] = false;
+                    direction = -1;
                     setImg(Sprite.player_up.getFxImage());
                     break;
                 }
                 case S: {
-                    directions[DOWN] = false;
+                    direction = -1;
                     setImg(Sprite.player_down.getFxImage());
                     break;
                 }
                 case A: {
-                    directions[LEFT] = false;
+                    direction = -1;
                     setImg(Sprite.player_left.getFxImage());
                     break;
                 }
                 case D: {
-                    directions[RIGHT] = false;
+                    direction = -1;
                     setImg(Sprite.player_right.getFxImage());
                     break;
                 }

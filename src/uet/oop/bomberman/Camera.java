@@ -4,6 +4,7 @@ import uet.oop.bomberman.entities.Entity;
 import uet.oop.bomberman.graphics.Sprite;
 
 public class Camera {
+
     private int x;
 
     private int y;
