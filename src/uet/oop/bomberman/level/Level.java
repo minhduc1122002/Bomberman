@@ -5,6 +5,10 @@ import uet.oop.bomberman.Board;
 import uet.oop.bomberman.entities.*;
 import uet.oop.bomberman.entities.enemy.Balloon;
 import uet.oop.bomberman.entities.tiles.*;
+import uet.oop.bomberman.entities.tiles.items.BombItem;
+import uet.oop.bomberman.entities.tiles.items.FlameItem;
+import uet.oop.bomberman.entities.tiles.items.Item;
+import uet.oop.bomberman.entities.tiles.items.SpeedItem;
 import uet.oop.bomberman.graphics.Sprite;
 
 import java.io.BufferedReader;
@@ -76,6 +80,21 @@ public class Level {
                             board.addCharacter(new Balloon(i * Sprite.SCALED_SIZE, j * Sprite.SCALED_SIZE, Sprite.balloom_left1.getFxImage(), board, 1));
                             break;
                         }
+                        case 'f': {
+                            tiles[i][j] = new Brick(i * Sprite.SCALED_SIZE, j * Sprite.SCALED_SIZE, Sprite.brick.getFxImage(), board,
+                                    new FlameItem(i * Sprite.SCALED_SIZE, j * Sprite.SCALED_SIZE, Sprite.powerup_flames.getFxImage(), board));
+                            break;
+                        }
+                        case 'b': {
+                            tiles[i][j] = new Brick(i * Sprite.SCALED_SIZE, j * Sprite.SCALED_SIZE, Sprite.brick.getFxImage(), board,
+                                    new BombItem(i * Sprite.SCALED_SIZE, j * Sprite.SCALED_SIZE, Sprite.powerup_bombs.getFxImage(), board));
+                            break;
+                        }
+                        case 's': {
+                            tiles[i][j] = new Brick(i * Sprite.SCALED_SIZE, j * Sprite.SCALED_SIZE, Sprite.brick.getFxImage(), board,
+                                    new SpeedItem(i * Sprite.SCALED_SIZE, j * Sprite.SCALED_SIZE, Sprite.powerup_speed.getFxImage(), board));
+                            break;
+                        }
                         default: {
                             tiles[i][j] = new Grass(i * Sprite.SCALED_SIZE, j * Sprite.SCALED_SIZE, Sprite.grass.getFxImage(), board);
                             break;
@@ -124,6 +143,11 @@ public class Level {
                 if (tiles[i][j] instanceof Brick) {
                     if (((Brick) tiles[i][j]).isRemove()) {
                         tiles[i][j] = ((Brick) tiles[i][j]).getBelow();
+                    }
+                }
+                if (tiles[i][j] instanceof Item) {
+                    if (((Item) tiles[i][j]).isRemove()) {
+                        tiles[i][j] = new Grass(tiles[i][j].getX(), tiles[i][j].getY(), Sprite.grass.getFxImage(), board);
                     }
                 }
                 tiles[i][j].update();
