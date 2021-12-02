@@ -3,6 +3,7 @@ package uet.oop.bomberman.entities.enemy;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.shape.Rectangle;
+import uet.oop.bomberman.ai.AI;
 import uet.oop.bomberman.Board;
 import uet.oop.bomberman.entities.Character;
 import uet.oop.bomberman.entities.Entity;
@@ -15,6 +16,8 @@ public abstract class Enemy extends Character {
     protected int speed;
 
     protected final double MAX_STEPS;
+
+    protected AI ai;
 
     protected final double rest;
 
@@ -41,7 +44,7 @@ public abstract class Enemy extends Character {
     }
 
     public Rectangle getBoundary() {
-        return new Rectangle(x + 4, y + 4, Sprite.SCALED_SIZE - 8, Sprite.SCALED_SIZE - 8);
+        return new Rectangle(x + 2, y + 2, Sprite.SCALED_SIZE - 4, Sprite.SCALED_SIZE - 4);
     }
 
     public abstract void kill();

@@ -11,11 +11,9 @@ import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 import uet.oop.bomberman.graphics.Sprite;
 
-
-
 public class BombermanGame extends Application {
     
-    public static final int WIDTH = 30 / 2;
+    public static final int WIDTH = 31 / 2;
 
     public static final int HEIGHT = 13;
     

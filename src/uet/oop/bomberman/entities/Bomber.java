@@ -95,8 +95,20 @@ public class Bomber extends Character {
         return flameLength;
     }
 
+    public void setBombRate(int bombRate) {
+        this.bombRate = bombRate;
+    }
+
     public int getBombRate() {
         return bombRate;
+    }
+
+    public void setSpeed(int speed) {
+        this.speed = speed;
+    }
+
+    public int getSpeed() {
+        return speed;
     }
 
     public void animation() {

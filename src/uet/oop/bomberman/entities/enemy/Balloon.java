@@ -2,18 +2,25 @@ package uet.oop.bomberman.entities.enemy;
 
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
+import uet.oop.bomberman.ai.AIAdvance;
 import uet.oop.bomberman.Board;
 import uet.oop.bomberman.entities.Bomber;
 import uet.oop.bomberman.entities.Entity;
 import uet.oop.bomberman.entities.bomb.Flame;
 import uet.oop.bomberman.graphics.Sprite;
 
+import java.util.Random;
+
 public class Balloon extends Enemy {
 
     private int animate = 0;
 
+    private int finalAnimation = 40;
+
     public Balloon(int x, int y, Image img, Board board, int speed) {
         super(x, y, img, board, speed);
+        ai = new AIAdvance(getBoard().getBomber(),this, board);
+        timeAfterKill = 20;
     }
 
     @Override
@@ -25,10 +32,16 @@ public class Balloon extends Enemy {
     @Override
     public void afterKill() {
         if (timeAfterKill > 0) {
-            setImg(Sprite.movingSprite(Sprite.balloom_dead, Sprite.mob_dead1, Sprite.mob_dead2, animate, 60).getFxImage());
+            setImg(Sprite.balloom_dead.getFxImage());
+            animate = 0;
             timeAfterKill--;
         } else {
-            remove();
+            if (finalAnimation > 0) {
+                setImg(Sprite.movingSprite(Sprite.mob_dead1, Sprite.mob_dead2, Sprite.mob_dead3, animate, 60).getFxImage());
+                finalAnimation--;
+            } else {
+                remove();
+            }
         }
     }
 
@@ -56,16 +69,16 @@ public class Balloon extends Enemy {
     public void update() {
         if (alive) {
             move();
-            animation();
         } else {
             afterKill();
         }
+        animation();
     }
 
-    @Override
+
     public void move() {
         if (steps <= 0) {
-            direction = rand(0, 3);
+            direction = ai.calculateDirection();;
             steps = MAX_STEPS;
         }
         if (direction == RIGHT) {
@@ -75,7 +88,7 @@ public class Balloon extends Enemy {
                 x += speed;
                 steps -= 1 + rest;
             } else {
-                x = (int) (tx * Sprite.SCALED_SIZE - getBoundary().getWidth() - 4 - 1);
+                x = (int) (tx * Sprite.SCALED_SIZE - getBoundary().getWidth() - 2 - 1);
                 steps = 0;
             }
         } else if (direction == LEFT) {
@@ -85,7 +98,7 @@ public class Balloon extends Enemy {
                 x -= speed;
                 steps -= 1 + rest;
             } else {
-                x = (tx * Sprite.SCALED_SIZE + Sprite.SCALED_SIZE - 4);
+                x = (tx * Sprite.SCALED_SIZE + Sprite.SCALED_SIZE - 2);
                 steps = 0;
             }
         } else if (direction == UP) {
@@ -95,7 +108,7 @@ public class Balloon extends Enemy {
                 y -= speed;
                 steps -= 1 + rest;
             } else {
-                y = (int) (ty * Sprite.SCALED_SIZE + Sprite.SCALED_SIZE - 4);
+                y = (int) (ty * Sprite.SCALED_SIZE + Sprite.SCALED_SIZE - 2);
                 steps = 0;
             }
         } else if (direction == DOWN) {
@@ -105,23 +118,31 @@ public class Balloon extends Enemy {
                 y += speed;
                 steps -= 1 + rest;
             } else {
-                y = (int) (ty * Sprite.SCALED_SIZE - getBoundary().getHeight() - 4 - 1);
+                y = (int) (ty * Sprite.SCALED_SIZE - getBoundary().getHeight() - 2 - 1);
                 steps = 0;
             }
+        } else {
+            steps = 0;
         }
     }
 
     public void animation() {
+        if (animate < 7500) {
+            animate ++;
+        } else {
+            animate = 0;
+        }
         if (alive) {
-            if (animate < 7500) {
-                animate ++;
-            } else {
-                animate = 0;
-            }
             if (direction == RIGHT) {
                 setImg(Sprite.movingSprite(Sprite.balloom_right1, Sprite.balloom_right2, Sprite.balloom_right3, animate, 30).getFxImage());
             } else if (direction == LEFT) {
                 setImg(Sprite.movingSprite(Sprite.balloom_left1, Sprite.balloom_left2, Sprite.balloom_left3, animate, 30).getFxImage());
+            } else if (direction == UP) {
+                setImg(Sprite.movingSprite(Sprite.balloom_right1, Sprite.balloom_right2, Sprite.balloom_right3, animate, 30).getFxImage());
+            } else if (direction == DOWN) {
+                setImg(Sprite.movingSprite(Sprite.balloom_left1, Sprite.balloom_left2, Sprite.balloom_left3, animate, 30).getFxImage());
+            } else {
+                setImg(Sprite.movingSprite(Sprite.balloom_right1, Sprite.balloom_right2, Sprite.balloom_right3, animate, 30).getFxImage());
             }
         }
     }

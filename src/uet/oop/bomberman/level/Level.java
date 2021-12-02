@@ -5,6 +5,10 @@ import uet.oop.bomberman.Board;
 import uet.oop.bomberman.entities.*;
 import uet.oop.bomberman.entities.enemy.Balloon;
 import uet.oop.bomberman.entities.tiles.*;
+import uet.oop.bomberman.entities.tiles.items.BombItem;
+import uet.oop.bomberman.entities.tiles.items.FlameItem;
+import uet.oop.bomberman.entities.tiles.items.Item;
+import uet.oop.bomberman.entities.tiles.items.SpeedItem;
 import uet.oop.bomberman.graphics.Sprite;
 
 import java.io.BufferedReader;
@@ -28,6 +32,10 @@ public class Level {
     public Level(Board board, int level) {
         this.level = level;
         this.board = board;
+        loadFromFile();
+    }
+
+    public void loadFromFile() {
         try {
             String path = "res/levels/Level" + level + ".txt";
             File file = new File(path);
@@ -37,49 +45,14 @@ public class Level {
             String[] str = line.split(" ");
             width = Integer.parseInt(str[2]);
             height = Integer.parseInt(str[1]);
-            maps = new char[width][height];
-            tiles = new Tile[width][height];
+            maps = new char[height][width];
+            tiles = new Tile[height][width];
 
             for (int i = 0; i < height; i++) {
                 line = buffReader.readLine();
                 if (line != null) {
                     for (int j = 0; j < width; j++) {
-                        maps[j][i] = line.charAt(j);
-                    }
-                }
-            }
-
-            for (int i = 0; i < width; i++) {
-                for (int j = 0 ; j < height; j++) {
-                    switch (maps[i][j]) {
-                        case '#': {
-                            tiles[i][j] = new Wall(i * Sprite.SCALED_SIZE, j * Sprite.SCALED_SIZE, Sprite.wall.getFxImage(), board);
-                            break;
-                        }
-                        case 'p': {
-                            tiles[i][j] = new Grass(i * Sprite.SCALED_SIZE, j * Sprite.SCALED_SIZE, Sprite.grass.getFxImage(), board);
-                            board.addCharacter(new Bomber(i * Sprite.SCALED_SIZE, j * Sprite.SCALED_SIZE, Sprite.player_right.getFxImage(), board));
-                            break;
-                        }
-                        case '*': {
-                            tiles[i][j] = new Brick(i * Sprite.SCALED_SIZE, j * Sprite.SCALED_SIZE, Sprite.brick.getFxImage(), board,
-                                    new Grass(i * Sprite.SCALED_SIZE, j * Sprite.SCALED_SIZE, Sprite.grass.getFxImage(), board));
-                            break;
-                        }
-                        case 'x': {
-                            tiles[i][j] = new Brick(i * Sprite.SCALED_SIZE, j * Sprite.SCALED_SIZE, Sprite.brick.getFxImage(), board,
-                                    new Portal(i * Sprite.SCALED_SIZE, j * Sprite.SCALED_SIZE, Sprite.portal.getFxImage(), board));
-                            break;
-                        }
-                        case '1': {
-                            tiles[i][j] = new Grass(i * Sprite.SCALED_SIZE, j * Sprite.SCALED_SIZE, Sprite.grass.getFxImage(), board);
-                            board.addCharacter(new Balloon(i * Sprite.SCALED_SIZE, j * Sprite.SCALED_SIZE, Sprite.balloom_left1.getFxImage(), board, 1));
-                            break;
-                        }
-                        default: {
-                            tiles[i][j] = new Grass(i * Sprite.SCALED_SIZE, j * Sprite.SCALED_SIZE, Sprite.grass.getFxImage(), board);
-                            break;
-                        }
+                        maps[i][j] = line.charAt(j);
                     }
                 }
             }
@@ -87,6 +60,58 @@ public class Level {
             buffReader.close();
         } catch (Exception exception) {
             exception.printStackTrace();
+        }
+    }
+
+    public void addEntity() {
+        for (int i = 0; i < height; i++) {
+            for (int j = 0; j < width; j++) {
+                switch (maps[i][j]) {
+                    case '#': {
+                        tiles[i][j] = new Wall(j * Sprite.SCALED_SIZE, i * Sprite.SCALED_SIZE, Sprite.wall.getFxImage(), board);
+                        break;
+                    }
+                    case 'p': {
+                        tiles[i][j] = new Grass(j * Sprite.SCALED_SIZE, i * Sprite.SCALED_SIZE, Sprite.grass.getFxImage(), board);
+                        board.addCharacter(new Bomber(j * Sprite.SCALED_SIZE, i * Sprite.SCALED_SIZE, Sprite.player_right.getFxImage(), board));
+                        break;
+                    }
+                    case '*': {
+                        tiles[i][j] = new Brick(j * Sprite.SCALED_SIZE, i * Sprite.SCALED_SIZE, Sprite.brick.getFxImage(), board,
+                                new Grass(j * Sprite.SCALED_SIZE, i * Sprite.SCALED_SIZE, Sprite.grass.getFxImage(), board));
+                        break;
+                    }
+                    case 'x': {
+                        tiles[i][j] = new Brick(j * Sprite.SCALED_SIZE, i * Sprite.SCALED_SIZE, Sprite.brick.getFxImage(), board,
+                                new Portal(j * Sprite.SCALED_SIZE, i * Sprite.SCALED_SIZE, Sprite.portal.getFxImage(), board));
+                        break;
+                    }
+                    case '1': {
+                        tiles[i][j] = new Grass(j * Sprite.SCALED_SIZE, i * Sprite.SCALED_SIZE, Sprite.grass.getFxImage(), board);
+                        board.addCharacter(new Balloon(j * Sprite.SCALED_SIZE, i * Sprite.SCALED_SIZE, Sprite.balloom_left1.getFxImage(), board, 2));
+                        break;
+                    }
+                    case 'f': {
+                        tiles[i][j] = new Brick(j * Sprite.SCALED_SIZE, i * Sprite.SCALED_SIZE, Sprite.brick.getFxImage(), board,
+                                new FlameItem(j * Sprite.SCALED_SIZE, i * Sprite.SCALED_SIZE, Sprite.powerup_flames.getFxImage(), board));
+                        break;
+                    }
+                    case 'b': {
+                        tiles[i][j] = new Brick(j * Sprite.SCALED_SIZE, i * Sprite.SCALED_SIZE, Sprite.brick.getFxImage(), board,
+                                new BombItem(j * Sprite.SCALED_SIZE, i * Sprite.SCALED_SIZE, Sprite.powerup_bombs.getFxImage(), board));
+                        break;
+                    }
+                    case 's': {
+                        tiles[i][j] = new Brick(j * Sprite.SCALED_SIZE, i * Sprite.SCALED_SIZE, Sprite.brick.getFxImage(), board,
+                                new SpeedItem(j * Sprite.SCALED_SIZE, i * Sprite.SCALED_SIZE, Sprite.powerup_speed.getFxImage(), board));
+                        break;
+                    }
+                    default: {
+                        tiles[i][j] = new Grass(j * Sprite.SCALED_SIZE, i * Sprite.SCALED_SIZE, Sprite.grass.getFxImage(), board);
+                        break;
+                    }
+                }
+            }
         }
     }
 
@@ -111,19 +136,24 @@ public class Level {
     }
 
     public void render(GraphicsContext gc) {
-        for (int i = 0; i < width; i++) {
-            for (int j = 0; j < height; j++) {
+        for (int i = 0; i < height; i++) {
+            for (int j = 0; j < width; j++) {
                 tiles[i][j].render(gc);
             }
         }
     }
 
     public void update() {
-        for (int i = 0; i < width; i++) {
-            for (int j = 0; j < height; j++) {
+        for (int i = 0; i < height; i++) {
+            for (int j = 0; j < width; j++) {
                 if (tiles[i][j] instanceof Brick) {
                     if (((Brick) tiles[i][j]).isRemove()) {
                         tiles[i][j] = ((Brick) tiles[i][j]).getBelow();
+                    }
+                }
+                if (tiles[i][j] instanceof Item) {
+                    if (((Item) tiles[i][j]).isRemove()) {
+                        tiles[i][j] = new Grass(tiles[i][j].getX(), tiles[i][j].getY(), Sprite.grass.getFxImage(), board);
                     }
                 }
                 tiles[i][j].update();
@@ -132,6 +162,10 @@ public class Level {
     }
 
     public Tile getTileAt(int x, int y) {
-        return tiles[x][y];
+        return tiles[y][x];
+    }
+
+    public char[][] getMaps() {
+        return maps;
     }
 }

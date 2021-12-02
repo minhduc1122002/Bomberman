@@ -7,7 +7,12 @@ import uet.oop.bomberman.entities.Entity;
 import uet.oop.bomberman.entities.bomb.Flame;
 import uet.oop.bomberman.graphics.Sprite;
 
+import java.util.ArrayList;
+
 public class Brick extends Tile {
+
+    public static ArrayList<Integer> Xgachvo = new ArrayList();
+    public static ArrayList<Integer> Ygachvo = new ArrayList();
 
     private int animate = 0;
 
@@ -22,11 +27,20 @@ public class Brick extends Tile {
         this.below = below;
     }
 
+    public static void addXgachvo(int x) {
+        Xgachvo.add(x);
+    }
+
+    public static void addYgachvo(int y) {
+        Ygachvo.add(y);
+
+    }
+
     @Override
     public void update() {
         if (isBroken) {
             if (animate < 7500) {
-                animate ++;
+                animate++;
             } else {
                 animate = 0;
             }
@@ -51,6 +65,8 @@ public class Brick extends Tile {
     @Override
     public boolean collide(Entity e) {
         if(e instanceof Flame) {
+            addXgachvo(x / Sprite.SCALED_SIZE);
+            addYgachvo(y / Sprite.SCALED_SIZE);
             isBroken = true;
         }
         return true;

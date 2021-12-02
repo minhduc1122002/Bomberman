@@ -33,6 +33,14 @@ public abstract class Entity {
         return x;
     }
 
+    public int getYTile() {
+        return (y + Sprite.SCALED_SIZE / 2) / Sprite.SCALED_SIZE;
+    }
+
+    public int getXTile() {
+        return (x + Sprite.SCALED_SIZE / 2) / Sprite.SCALED_SIZE;
+    }
+
     public void remove() {
         remove = true;
     }

@@ -24,6 +24,7 @@ public class Board {
 
     public Board() {
         level = new Level(this,1);
+        level.addEntity();
         camera = new Camera(this, 0,0);
     }
 
@@ -31,6 +32,7 @@ public class Board {
         if (!(level.getLevel() + 1 > Level.MAX_LEVEL)) {
             clear();
             level = new Level(this, level.getLevel() + 1);
+            level.addEntity();
         }
     }
 
@@ -94,7 +96,7 @@ public class Board {
             if (cur == a) {
                 continue;
             }
-            if ((cur.getX() + Sprite.SCALED_SIZE / 2) / Sprite.SCALED_SIZE == x && (cur.getY() + Sprite.SCALED_SIZE / 2 ) / Sprite.SCALED_SIZE == y) {
+            if (cur.getXTile() == x && cur.getYTile() == y) {
                 return cur;
             }
         }
