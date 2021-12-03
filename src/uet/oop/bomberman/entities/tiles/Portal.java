@@ -5,6 +5,7 @@ import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import uet.oop.bomberman.Board;
+import uet.oop.bomberman.BombermanGame;
 import uet.oop.bomberman.entities.Bomber;
 import uet.oop.bomberman.entities.Entity;
 
@@ -20,11 +21,11 @@ public class Portal extends Tile {
         int xOffset = getBoard().getCamera().getX();
         int yOffset = getBoard().getCamera().getY();
         gc.fillRect(rect.getX() - xOffset,
-                rect.getY() - yOffset,
+                rect.getY() - yOffset + BombermanGame.GAME_OFFSET,
                 rect.getWidth(),
                 rect.getHeight());
         gc.setFill(Color.BLACK);
-        gc.drawImage(img, x - xOffset, y - yOffset);
+        gc.drawImage(img, x - xOffset, y - yOffset + BombermanGame.GAME_OFFSET);
     }
 
     @Override

@@ -3,6 +3,7 @@ package uet.oop.bomberman.entities.bomb;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import uet.oop.bomberman.Board;
+import uet.oop.bomberman.BombermanGame;
 import uet.oop.bomberman.entities.Bomber;
 import uet.oop.bomberman.entities.Character;
 import uet.oop.bomberman.entities.Entity;
@@ -67,7 +68,7 @@ public class Bomb extends Entity {
         flames.forEach(g -> g.render(gc));
         int xOffset = getBoard().getCamera().getX();
         int yOffset = getBoard().getCamera().getY();
-        gc.drawImage(img, x - xOffset, y - yOffset);
+        gc.drawImage(img, x - xOffset, y - yOffset + BombermanGame.GAME_OFFSET);
     }
 
     @Override
@@ -75,8 +76,8 @@ public class Bomb extends Entity {
         if (e instanceof Bomber) {
             int diffX = e.getX() - this.getX();
             int diffY = e.getY() - this.getY();
-            if (!(diffX > -e.getBoundary().getWidth() - 4 - 1 && diffX < 44
-                    && diffY > -e.getBoundary().getHeight() - 6 - 1 && diffY < 42)) {
+            if (!(diffX > -e.getBoundary().getWidth() - 4 - 1 && diffX < Sprite.SCALED_SIZE - 4
+                    && diffY > -e.getBoundary().getHeight() - 4 - 1 && diffY < Sprite.SCALED_SIZE - 4)) {
                 canPass = true;
             }
             return canPass;

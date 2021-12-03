@@ -3,8 +3,10 @@ package uet.oop.bomberman.entities.tiles;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import uet.oop.bomberman.Board;
+import uet.oop.bomberman.BombermanGame;
 import uet.oop.bomberman.entities.Entity;
 import uet.oop.bomberman.entities.bomb.Flame;
+import uet.oop.bomberman.entities.enemy.Kondoria;
 import uet.oop.bomberman.graphics.Sprite;
 
 import java.util.ArrayList;
@@ -59,15 +61,18 @@ public class Brick extends Tile {
         below.render(gc);
         int xOffset = getBoard().getCamera().getX();
         int yOffset = getBoard().getCamera().getY();
-        gc.drawImage(img, x - xOffset, y - yOffset);
+        gc.drawImage(img, x - xOffset, y - yOffset + BombermanGame.GAME_OFFSET);
     }
 
     @Override
     public boolean collide(Entity e) {
-        if(e instanceof Flame) {
+        if (e instanceof Flame) {
             addXgachvo(x / Sprite.SCALED_SIZE);
             addYgachvo(y / Sprite.SCALED_SIZE);
             isBroken = true;
+        }
+        if (e instanceof Kondoria) {
+            return false;
         }
         return true;
     }

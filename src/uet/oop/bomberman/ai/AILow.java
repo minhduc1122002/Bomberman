@@ -8,7 +8,7 @@ public class AILow extends AI {
         return rand;
     }
 
-    public int rand(int min, int max) {
+    public static int rand(int min, int max) {
         try {
             int range = max - min + 1;
             int randomNum = min + random.nextInt(range);

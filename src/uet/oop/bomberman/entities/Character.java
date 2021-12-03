@@ -3,6 +3,7 @@ package uet.oop.bomberman.entities;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import uet.oop.bomberman.Board;
+import uet.oop.bomberman.BombermanGame;
 
 public abstract class Character extends Entity {
 
@@ -11,8 +12,8 @@ public abstract class Character extends Entity {
     public static final int UP = 2;
     public static final int DOWN = 3;
 
-    protected int direction;
 
+    protected int direction;
     protected boolean alive = true;
     protected int timeAfterKill = 40;
 
@@ -21,11 +22,17 @@ public abstract class Character extends Entity {
         direction = -1;
     }
 
+
     public abstract void kill();
 
     public abstract void afterKill();
 
-    public abstract void render(GraphicsContext gc) ;
+    @Override
+    public void render(GraphicsContext gc) {
+        int xOffset = getBoard().getCamera().getX();
+        int yOffset = getBoard().getCamera().getY();
+        gc.drawImage(img, x - xOffset, y - yOffset + BombermanGame.GAME_OFFSET);
+    }
 
     public abstract boolean collide(Entity e);
 

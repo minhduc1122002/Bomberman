@@ -2,24 +2,24 @@ package uet.oop.bomberman.entities.enemy;
 
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
-
 import uet.oop.bomberman.Board;
 import uet.oop.bomberman.BombermanGame;
-import uet.oop.bomberman.ai.AILow;
+import uet.oop.bomberman.ai.AIAdvance;
+import uet.oop.bomberman.ai.AIMedium;
+import uet.oop.bomberman.ai.AIMediumHigh;
 import uet.oop.bomberman.entities.Bomber;
 import uet.oop.bomberman.entities.Entity;
 import uet.oop.bomberman.entities.bomb.Flame;
 import uet.oop.bomberman.graphics.Sprite;
 
-public class Balloon extends Enemy {
-
+public class Kondoria extends Enemy {
     private int animate = 0;
 
     private int finalAnimation = 40;
 
-    public Balloon(int x, int y, Image img, Board board, int speed) {
+    public Kondoria(int x, int y, Image img, Board board, int speed) {
         super(x, y, img, board, speed);
-        ai = new AILow();
+        ai = new AIMediumHigh(getBoard().getBomber(), this, board);
         timeAfterKill = 20;
     }
 
@@ -32,7 +32,7 @@ public class Balloon extends Enemy {
     @Override
     public void afterKill() {
         if (timeAfterKill > 0) {
-            setImg(Sprite.balloom_dead.getFxImage());
+            setImg(Sprite.kondoria_dead.getFxImage());
             animate = 0;
             timeAfterKill--;
         } else {
@@ -127,15 +127,15 @@ public class Balloon extends Enemy {
         }
         if (alive) {
             if (direction == RIGHT) {
-                setImg(Sprite.movingSprite(Sprite.balloom_right1, Sprite.balloom_right2, Sprite.balloom_right3, animate, 30).getFxImage());
+                setImg(Sprite.movingSprite(Sprite.kondoria_right1, Sprite.kondoria_right2, Sprite.kondoria_right3, animate, 30).getFxImage());
             } else if (direction == LEFT) {
-                setImg(Sprite.movingSprite(Sprite.balloom_left1, Sprite.balloom_left2, Sprite.balloom_left3, animate, 30).getFxImage());
+                setImg(Sprite.movingSprite(Sprite.kondoria_left1, Sprite.kondoria_left2, Sprite.kondoria_left3, animate, 30).getFxImage());
             } else if (direction == UP) {
-                setImg(Sprite.movingSprite(Sprite.balloom_left1, Sprite.balloom_left2, Sprite.balloom_left3, animate, 30).getFxImage());
+                setImg(Sprite.movingSprite(Sprite.kondoria_left1, Sprite.kondoria_left2, Sprite.kondoria_left3, animate, 30).getFxImage());
             } else if (direction == DOWN) {
-                setImg(Sprite.movingSprite(Sprite.balloom_left1, Sprite.balloom_left2, Sprite.balloom_left3, animate, 30).getFxImage());
+                setImg(Sprite.movingSprite(Sprite.kondoria_left1, Sprite.kondoria_left2, Sprite.kondoria_left3, animate, 30).getFxImage());
             } else {
-                setImg(Sprite.balloom_left1.getFxImage());
+                setImg(Sprite.kondoria_left1.getFxImage());
             }
         }
     }

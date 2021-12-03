@@ -4,6 +4,7 @@ import javafx.scene.canvas.GraphicsContext;
 import uet.oop.bomberman.entities.*;
 import uet.oop.bomberman.entities.bomb.Bomb;
 import uet.oop.bomberman.entities.bomb.Flame;
+import uet.oop.bomberman.entities.enemy.Enemy;
 import uet.oop.bomberman.graphics.Sprite;
 import uet.oop.bomberman.level.Level;
 import uet.oop.bomberman.entities.Character;
@@ -97,6 +98,9 @@ public class Board {
                 continue;
             }
             if (cur.getXTile() == x && cur.getYTile() == y) {
+                if (a instanceof Enemy && cur instanceof Enemy) {
+                    return null;
+                }
                 return cur;
             }
         }

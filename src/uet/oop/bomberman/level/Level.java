@@ -4,6 +4,9 @@ import javafx.scene.canvas.GraphicsContext;
 import uet.oop.bomberman.Board;
 import uet.oop.bomberman.entities.*;
 import uet.oop.bomberman.entities.enemy.Balloon;
+import uet.oop.bomberman.entities.enemy.Doll;
+import uet.oop.bomberman.entities.enemy.Kondoria;
+import uet.oop.bomberman.entities.enemy.Oneal;
 import uet.oop.bomberman.entities.tiles.*;
 import uet.oop.bomberman.entities.tiles.items.BombItem;
 import uet.oop.bomberman.entities.tiles.items.FlameItem;
@@ -106,6 +109,21 @@ public class Level {
                                 new SpeedItem(j * Sprite.SCALED_SIZE, i * Sprite.SCALED_SIZE, Sprite.powerup_speed.getFxImage(), board));
                         break;
                     }
+                    case '2': {
+                        tiles[i][j] = new Grass(j * Sprite.SCALED_SIZE, i * Sprite.SCALED_SIZE, Sprite.grass.getFxImage(), board);
+                        board.addCharacter(new Oneal(j * Sprite.SCALED_SIZE, i * Sprite.SCALED_SIZE, Sprite.balloom_left1.getFxImage(), board, 2));
+                        break;
+                    }
+                    case '3': {
+                        tiles[i][j] = new Grass(j * Sprite.SCALED_SIZE, i * Sprite.SCALED_SIZE, Sprite.grass.getFxImage(), board);
+                        board.addCharacter(new Kondoria(j * Sprite.SCALED_SIZE, i * Sprite.SCALED_SIZE, Sprite.balloom_left1.getFxImage(), board, 1));
+                        break;
+                    }
+                    case '4': {
+                        tiles[i][j] = new Grass(j * Sprite.SCALED_SIZE, i * Sprite.SCALED_SIZE, Sprite.grass.getFxImage(), board);
+                        board.addCharacter(new Doll(j * Sprite.SCALED_SIZE, i * Sprite.SCALED_SIZE, Sprite.balloom_left1.getFxImage(), board, 2));
+                        break;
+                    }
                     default: {
                         tiles[i][j] = new Grass(j * Sprite.SCALED_SIZE, i * Sprite.SCALED_SIZE, Sprite.grass.getFxImage(), board);
                         break;
@@ -162,6 +180,9 @@ public class Level {
     }
 
     public Tile getTileAt(int x, int y) {
+        if ((x >= width || x < 0) || (y >= height || y < 0)) {
+            return null;
+        }
         return tiles[y][x];
     }
 

@@ -51,12 +51,6 @@ public class AIAdvance extends AI {
                 }
             }
         }
-        /*for (int i = 0; i < height; i++) {
-            for (int j = 0; j < width; j++) {
-                System.out.print(matrix[i][j] + " ");
-            }
-            System.out.println();
-        }*/
     }
 
     public void updateDestroy_Brick() {
@@ -256,7 +250,7 @@ public class AIAdvance extends AI {
 
         if (result == -1 ) //random.nextInt(4);
 
-            return -1;  // nếu đứng -1 cho đứng im
+            return random.nextInt(4);  // nếu đứng -1 cho đứng im
 
 
         if ( result - start == 1 ) return 0; // ben phai

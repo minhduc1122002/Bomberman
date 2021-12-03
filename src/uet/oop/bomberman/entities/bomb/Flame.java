@@ -3,6 +3,7 @@ package uet.oop.bomberman.entities.bomb;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import uet.oop.bomberman.Board;
+import uet.oop.bomberman.BombermanGame;
 import uet.oop.bomberman.entities.Entity;
 import uet.oop.bomberman.entities.enemy.Enemy;
 import uet.oop.bomberman.graphics.Sprite;
@@ -30,7 +31,7 @@ public class Flame extends Entity {
     public void render(GraphicsContext gc) {
         int xOffset = getBoard().getCamera().getX();
         int yOffset = getBoard().getCamera().getY();
-        gc.drawImage(img, x - xOffset, y - yOffset);
+        gc.drawImage(img, x - xOffset, y - yOffset + BombermanGame.GAME_OFFSET);
     }
 
     @Override

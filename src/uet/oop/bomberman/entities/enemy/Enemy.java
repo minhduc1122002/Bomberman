@@ -3,6 +3,7 @@ package uet.oop.bomberman.entities.enemy;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.shape.Rectangle;
+import uet.oop.bomberman.BombermanGame;
 import uet.oop.bomberman.ai.AI;
 import uet.oop.bomberman.Board;
 import uet.oop.bomberman.entities.Character;
@@ -51,7 +52,11 @@ public abstract class Enemy extends Character {
 
     public abstract void afterKill();
 
-    public abstract void render(GraphicsContext gc);
+    public void render(GraphicsContext gc) {
+        int xOffset = getBoard().getCamera().getX();
+        int yOffset = getBoard().getCamera().getY();
+        gc.drawImage(img, x - xOffset, y - yOffset + BombermanGame.GAME_OFFSET);
+    }
 
     public abstract boolean collide(Entity e);
 

@@ -5,6 +5,7 @@ import javafx.scene.image.Image;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.shape.Rectangle;
 import uet.oop.bomberman.Board;
+import uet.oop.bomberman.BombermanGame;
 import uet.oop.bomberman.entities.bomb.Bomb;
 import uet.oop.bomberman.entities.bomb.Flame;
 import uet.oop.bomberman.entities.enemy.Enemy;
@@ -54,7 +55,7 @@ public class Bomber extends Character {
 
     @Override
     public Rectangle getBoundary() {
-        return new Rectangle(x + 4, y + 6, Sprite.SCALED_SIZE - 20, Sprite.SCALED_SIZE - 12);
+        return new Rectangle(x + 4, y + 4, Sprite.SCALED_SIZE - 20, Sprite.SCALED_SIZE - 8);
     }
 
     @Override
@@ -68,13 +69,6 @@ public class Bomber extends Character {
             return false;
         }
         return false;
-    }
-
-    @Override
-    public void render(GraphicsContext gc) {
-        int xOffset = getBoard().getCamera().getX();
-        int yOffset = getBoard().getCamera().getY();
-        gc.drawImage(img, x - xOffset, y - yOffset);
     }
 
     /** test **/
@@ -154,7 +148,7 @@ public class Bomber extends Character {
                     && !(getBoard().getEntityAt((int) (getBoundary().getX() + getBoundary().getWidth()) / Sprite.SCALED_SIZE, ty, this).collide(this))) {
                 y -= speed;
             } else {
-                y = (int) (ty * Sprite.SCALED_SIZE + Sprite.SCALED_SIZE - 6);
+                y = (int) (ty * Sprite.SCALED_SIZE + Sprite.SCALED_SIZE - 4);
             }
         } else if (direction == DOWN) {
             int ty = (int) (speed + getBoundary().getY() + getBoundary().getHeight()) / Sprite.SCALED_SIZE;
@@ -162,7 +156,7 @@ public class Bomber extends Character {
                     && !(getBoard().getEntityAt((int) (getBoundary().getX() + getBoundary().getWidth()) / Sprite.SCALED_SIZE, ty, this).collide(this))) {
                 y += speed;
             } else {
-                y = (int) (ty * Sprite.SCALED_SIZE - getBoundary().getHeight() - 6 - 1);
+                y = (int) (ty * Sprite.SCALED_SIZE - getBoundary().getHeight() - 4 - 1);
             }
         }
     }

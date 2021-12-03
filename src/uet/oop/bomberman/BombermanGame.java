@@ -8,10 +8,13 @@ import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import uet.oop.bomberman.graphics.Sprite;
 
 public class BombermanGame extends Application {
+
+    public static final int GAME_OFFSET = 48;
     
     public static final int WIDTH = 31 / 2;
 
@@ -23,6 +26,16 @@ public class BombermanGame extends Application {
 
     private Board board;
 
+    private AnchorPane menuPane;
+
+    private Scene menuScene;
+
+    private Stage menuStage;
+
+    private boolean paused = false;
+
+    private boolean menu = true;
+
     public static void main(String[] args) {
         Application.launch(BombermanGame.class);
     }
@@ -30,15 +43,11 @@ public class BombermanGame extends Application {
     @Override
     public void start(Stage stage) {
         board = new Board();
-        // Tao Canvas
-        canvas = new Canvas(WIDTH * Sprite.SCALED_SIZE, HEIGHT * Sprite.SCALED_SIZE);
+        canvas = new Canvas(WIDTH * Sprite.SCALED_SIZE, HEIGHT * Sprite.SCALED_SIZE + GAME_OFFSET);
         gc = canvas.getGraphicsContext2D();
-
-        // Tao root container
         Group root = new Group();
         root.getChildren().add(canvas);
 
-        // Tao scene
         Scene scene = new Scene(root);
 
         scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
@@ -54,7 +63,7 @@ public class BombermanGame extends Application {
             }
         });
 
-        // Them scene vao stage
+
         stage.setTitle("Bomberman");
         stage.setScene(scene);
         stage.show();
