@@ -21,11 +21,19 @@ public class Board {
 
     private Level level;
 
+    private int score;
+
+    private int time;
+
     private Camera camera;
+
+    public static final int DEFAULT_TIME = 180;
 
     public Board() {
         level = new Level(this,1);
         level.addEntity();
+        score = 0;
+        time = DEFAULT_TIME * 60;
         camera = new Camera(this, 0,0);
     }
 
@@ -41,8 +49,20 @@ public class Board {
         return camera;
     }
 
+    public int getScore() {
+        return score;
+    }
+
     public Level getLevel() {
         return level;
+    }
+
+    public void addPoint(int point) {
+        score += point;
+    }
+
+    public int getTime() {
+        return time;
     }
 
     public void addCharacter(Character character) {
@@ -75,6 +95,13 @@ public class Board {
             }
         }
         level.update();
+        countDown();
+    }
+
+    private void countDown() {
+        if (time != 0) {
+            time--;
+        }
     }
 
     public Bomber getBomber() {
@@ -158,4 +185,5 @@ public class Board {
         e = level.getTileAt(x, y);
         return e;
     }
+
 }

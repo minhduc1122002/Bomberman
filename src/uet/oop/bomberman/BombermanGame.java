@@ -1,40 +1,36 @@
 package uet.oop.bomberman;
 
-import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.event.EventHandler;
-import javafx.scene.Group;
-import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.input.KeyEvent;
-import javafx.scene.layout.AnchorPane;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
-import uet.oop.bomberman.graphics.Sprite;
+import uet.oop.bomberman.gui.Game;
+import uet.oop.bomberman.gui.Menu;
 
 public class BombermanGame extends Application {
 
     public static final int GAME_OFFSET = 48;
-    
+
     public static final int WIDTH = 31 / 2;
 
     public static final int HEIGHT = 13;
-    
+
+    private Menu menu;
+
+    private Game game;
+
     private GraphicsContext gc;
 
     private Canvas canvas;
 
     private Board board;
 
-    private AnchorPane menuPane;
+    private Stage gameStage;
 
-    private Scene menuScene;
-
-    private Stage menuStage;
-
-    private boolean paused = false;
-
-    private boolean menu = true;
 
     public static void main(String[] args) {
         Application.launch(BombermanGame.class);
@@ -42,49 +38,57 @@ public class BombermanGame extends Application {
 
     @Override
     public void start(Stage stage) {
-        board = new Board();
-        canvas = new Canvas(WIDTH * Sprite.SCALED_SIZE, HEIGHT * Sprite.SCALED_SIZE + GAME_OFFSET);
-        gc = canvas.getGraphicsContext2D();
-        Group root = new Group();
-        root.getChildren().add(canvas);
+        menu = new Menu();
+        game = new Game();
 
-        Scene scene = new Scene(root);
-
-        scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
-            @Override
-            public void handle(KeyEvent event) {
-                board.getBomber().eventHandler(event);
-            }
-        });
-        scene.setOnKeyReleased(new EventHandler<KeyEvent>() {
-            @Override
-            public void handle(KeyEvent event) {
-                board.getBomber().eventHandler(event);
-            }
-        });
-
-
-        stage.setTitle("Bomberman");
-        stage.setScene(scene);
+        stage = menu.getMenuStage();
+        gameStage = stage;
         stage.show();
-
-        AnimationTimer timer = new AnimationTimer() {
+        menu.getStartButton().setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
-            public void handle(long l) {
-                render();
-                update();
+            public void handle(MouseEvent mouseEvent) {
+                gameStage.setScene(game.getGameScene());
+                gameStage.show();
+                game.loop();
+                game.handleEvent();
             }
-        };
-        timer.start();
+        });
+
+        menu.getStartButton().setOnMouseEntered(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                menu.getStartButton().setGraphic(new ImageView(new Image("/buttons/start2.png")));
+            }
+        });
+
+        menu.getStartButton().setOnMouseExited(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                menu.getStartButton().setGraphic(new ImageView(new Image("/buttons/start1.png")));
+            }
+        });
+
+        menu.getExitButton().setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                System.out.println("Exit");
+                System.exit(0);
+            }
+        });
+
+        menu.getExitButton().setOnMouseEntered(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                menu.getExitButton().setGraphic(new ImageView(new Image("/buttons/exit2.png")));
+            }
+        });
+
+        menu.getExitButton().setOnMouseExited(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                menu.getExitButton().setGraphic(new ImageView(new Image("/buttons/exit1.png")));
+            }
+        });
     }
 
-    public void update() {
-        board.update();
-    }
-
-    public void render() {
-        gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
-        board.getCamera().centerEntity(board.getBomber());
-        board.render(gc);
-    }
 }

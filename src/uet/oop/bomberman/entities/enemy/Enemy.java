@@ -24,6 +24,8 @@ public abstract class Enemy extends Character {
 
     protected double steps;
 
+    public static final int POINT = 10;
+
     public Enemy(int x, int y, Image img, Board board, int speed) {
         super(x, y, img, board);
         this.speed = speed;
