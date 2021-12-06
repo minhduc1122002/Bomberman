@@ -2,8 +2,6 @@ package uet.oop.bomberman;
 
 import javafx.application.Application;
 import javafx.event.EventHandler;
-import javafx.scene.canvas.Canvas;
-import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -22,12 +20,6 @@ public class BombermanGame extends Application {
     private Menu menu;
 
     private Game game;
-
-    private GraphicsContext gc;
-
-    private Canvas canvas;
-
-    private Board board;
 
     private Stage gameStage;
 
