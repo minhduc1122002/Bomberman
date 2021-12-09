@@ -8,6 +8,7 @@ import uet.oop.bomberman.entities.Bomber;
 import uet.oop.bomberman.entities.Character;
 import uet.oop.bomberman.entities.Entity;
 import uet.oop.bomberman.graphics.Sprite;
+import uet.oop.bomberman.sounds.Sound;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -45,6 +46,7 @@ public class Bomb extends Entity {
             if(!isExploded) {
                 canPass = true;
                 isExploded = true;
+                Sound.playSound("bombExploded");
                 Character a = getBoard().getCharacterAtExcluding(x / Sprite.SCALED_SIZE, y / Sprite.SCALED_SIZE, null);
                 if (a != null)  {
                     a.kill();

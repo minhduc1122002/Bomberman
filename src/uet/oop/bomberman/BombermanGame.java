@@ -8,6 +8,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import uet.oop.bomberman.gui.Game;
 import uet.oop.bomberman.gui.Menu;
+import uet.oop.bomberman.sounds.Sound;
 
 public class BombermanGame extends Application {
 
@@ -30,6 +31,7 @@ public class BombermanGame extends Application {
 
     @Override
     public void start(Stage stage) {
+        Sound.playMenuMusic();
         menu = new Menu();
         game = new Game();
 
@@ -39,6 +41,8 @@ public class BombermanGame extends Application {
         menu.getStartButton().setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
+                Sound.playSound("menuClicked");
+                Sound.stopMenuMusic();
                 gameStage.setScene(game.getGameScene());
                 gameStage.show();
                 game.loop();
@@ -49,6 +53,7 @@ public class BombermanGame extends Application {
         menu.getStartButton().setOnMouseEntered(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
+                Sound.playSound("menuEntered");
                 menu.getStartButton().setGraphic(new ImageView(new Image("/buttons/start2.png")));
             }
         });
@@ -63,6 +68,7 @@ public class BombermanGame extends Application {
         menu.getExitButton().setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
+                Sound.playSound("menuClicked");
                 System.out.println("Exit");
                 System.exit(0);
             }
@@ -71,6 +77,7 @@ public class BombermanGame extends Application {
         menu.getExitButton().setOnMouseEntered(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
+                Sound.playSound("menuEntered");
                 menu.getExitButton().setGraphic(new ImageView(new Image("/buttons/exit2.png")));
             }
         });

@@ -10,6 +10,7 @@ import uet.oop.bomberman.entities.Bomber;
 import uet.oop.bomberman.entities.Entity;
 import uet.oop.bomberman.entities.bomb.Flame;
 import uet.oop.bomberman.graphics.Sprite;
+import uet.oop.bomberman.sounds.Sound;
 
 public class Oneal extends Enemy {
     private int animate = 0;
@@ -27,6 +28,7 @@ public class Oneal extends Enemy {
         if (!alive) return;
         alive = false;
         getBoard().addPoint(POINT * 4);
+        Sound.playSound("enemyKilled");
     }
 
     @Override
