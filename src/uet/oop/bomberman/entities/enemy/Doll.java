@@ -27,6 +27,7 @@ public class Doll extends Enemy {
     public void kill() {
         if (!alive) return;
         alive = false;
+        getBoard().addPoint(POINT * 2);
     }
 
     @Override

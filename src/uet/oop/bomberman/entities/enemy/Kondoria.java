@@ -27,6 +27,7 @@ public class Kondoria extends Enemy {
     public void kill() {
         if (!alive) return;
         alive = false;
+        getBoard().addPoint(POINT * 3);
     }
 
     @Override

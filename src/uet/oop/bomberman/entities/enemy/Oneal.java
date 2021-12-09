@@ -26,6 +26,7 @@ public class Oneal extends Enemy {
     public void kill() {
         if (!alive) return;
         alive = false;
+        getBoard().addPoint(POINT * 4);
     }
 
     @Override

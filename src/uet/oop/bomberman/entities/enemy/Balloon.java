@@ -27,6 +27,7 @@ public class Balloon extends Enemy {
     public void kill() {
         if (!alive) return;
         alive = false;
+        getBoard().addPoint(POINT);
     }
 
     @Override
