@@ -78,11 +78,21 @@ public class Bomb extends Entity {
         if (e instanceof Bomber) {
             int diffX = e.getX() - this.getX();
             int diffY = e.getY() - this.getY();
-            if (!(diffX > -e.getBoundary().getWidth() - 4 - 1 && diffX < Sprite.SCALED_SIZE - 4
-                    && diffY > -e.getBoundary().getHeight() - 4 - 1 && diffY < Sprite.SCALED_SIZE - 4)) {
+            if (!(diffX > -e.getBoundary().getWidth() - 6 - 1 && diffX < Sprite.SCALED_SIZE - 6
+                    && diffY > -e.getBoundary().getHeight() - 6 - 1 && diffY < Sprite.SCALED_SIZE - 6)) {
                 canPass = true;
             }
             return canPass;
+        }
+        if (e instanceof Flame) {
+            timeToExplode = 0;
+            return true;
+        }
+        if (e instanceof Bomb) {
+            if (((Bomb) e).isExploded) {
+                timeToExplode = 0;
+                return true;
+            }
         }
         return true;
     }

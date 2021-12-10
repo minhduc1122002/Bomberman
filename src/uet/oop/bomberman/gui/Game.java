@@ -43,7 +43,7 @@ public class Game {
         board = new Board();
         // Tao Canvas
         canvas = new Canvas(BombermanGame.WIDTH * Sprite.SCALED_SIZE,
-                BombermanGame.HEIGHT * Sprite.SCALED_SIZE);
+                BombermanGame.HEIGHT * Sprite.SCALED_SIZE + GAME_OFFSET);
         gc = canvas.getGraphicsContext2D();
 
         initLevelBackground();

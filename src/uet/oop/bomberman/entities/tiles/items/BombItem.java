@@ -18,6 +18,7 @@ public class BombItem extends Item {
             Sound.playSound("poweredUp");
             int newRate = getBoard().getBomber().getBombRate() + 1;
             getBoard().getBomber().setBombRate(newRate);
+            Board.BOMB_RATE++;
             setPoweredUp(true);
             remove = true;
         }

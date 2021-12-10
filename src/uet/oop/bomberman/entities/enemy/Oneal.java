@@ -19,7 +19,7 @@ public class Oneal extends Enemy {
 
     public Oneal(int x, int y, Image img, Board board, int speed) {
         super(x, y, img, board, speed);
-        ai = new AIAdvance(getBoard().getBomber(), this, board);
+        ai = new AIMedium(board, this);
         timeAfterKill = 20;
     }
 
@@ -81,7 +81,7 @@ public class Oneal extends Enemy {
             if (!(getBoard().getEntityAt(tx, (int) (getBoundary().getY()) / Sprite.SCALED_SIZE, this).collide(this))
                     && !(getBoard().getEntityAt(tx, (int) (getBoundary().getY() + getBoundary().getHeight()) / Sprite.SCALED_SIZE, this).collide(this))) {
                 x += speed;
-                steps -= 1 + rest;
+                steps -= 1;
             } else {
                 x = (int) (tx * Sprite.SCALED_SIZE - getBoundary().getWidth() - 2 - 1);
                 steps = 0;
@@ -91,7 +91,7 @@ public class Oneal extends Enemy {
             if (!(getBoard().getEntityAt(tx, (int) (getBoundary().getY()) / Sprite.SCALED_SIZE, this).collide(this))
                     && !(getBoard().getEntityAt(tx, (int) (getBoundary().getY() + getBoundary().getHeight()) / Sprite.SCALED_SIZE, this).collide(this))) {
                 x -= speed;
-                steps -= 1 + rest;
+                steps -= 1;
             } else {
                 x = (tx * Sprite.SCALED_SIZE + Sprite.SCALED_SIZE - 2);
                 steps = 0;
@@ -101,7 +101,7 @@ public class Oneal extends Enemy {
             if (!(getBoard().getEntityAt((int) getBoundary().getX() / Sprite.SCALED_SIZE, ty, this).collide(this))
                     && !(getBoard().getEntityAt((int) (getBoundary().getX() + getBoundary().getWidth()) / Sprite.SCALED_SIZE, ty, this).collide(this))) {
                 y -= speed;
-                steps -= 1 + rest;
+                steps -= 1;
             } else {
                 y = (int) (ty * Sprite.SCALED_SIZE + Sprite.SCALED_SIZE - 2);
                 steps = 0;
@@ -111,7 +111,7 @@ public class Oneal extends Enemy {
             if (!(getBoard().getEntityAt((int) getBoundary().getX() / Sprite.SCALED_SIZE, ty, this).collide(this))
                     && !(getBoard().getEntityAt((int) (getBoundary().getX() + getBoundary().getWidth()) / Sprite.SCALED_SIZE, ty, this).collide(this))) {
                 y += speed;
-                steps -= 1 + rest;
+                steps -= 1;
             } else {
                 y = (int) (ty * Sprite.SCALED_SIZE - getBoundary().getHeight() - 2 - 1);
                 steps = 0;

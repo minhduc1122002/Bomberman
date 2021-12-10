@@ -16,6 +16,12 @@ import java.util.List;
 
 public class Board {
 
+    public static int BOMB_RATE = 1;
+
+    public static int BOMBER_SPEED = 3;
+
+    public static int FLAME_LENGTH = 1;
+
     private List<Character> characters = new ArrayList<>();
 
     private List<Bomb> bombs = new ArrayList<>();
@@ -28,7 +34,7 @@ public class Board {
 
     private Camera camera;
 
-    public static final int DEFAULT_TIME = 1;
+    public static final int DEFAULT_TIME = 180;
 
     public Board() {
         level = new Level(this,1);

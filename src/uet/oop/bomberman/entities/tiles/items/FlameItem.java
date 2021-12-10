@@ -18,6 +18,7 @@ public class FlameItem extends Item {
             Sound.playSound("poweredUp");
             int newLength = getBoard().getBomber().getFlameLength() + 1;
             getBoard().getBomber().setFlameLength(newLength);
+            Board.FLAME_LENGTH++;
             setPoweredUp(true);
             remove = true;
         }
