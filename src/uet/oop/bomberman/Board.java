@@ -6,6 +6,7 @@ import uet.oop.bomberman.entities.bomb.Bomb;
 import uet.oop.bomberman.entities.bomb.Flame;
 import uet.oop.bomberman.entities.enemy.Enemy;
 import uet.oop.bomberman.graphics.Sprite;
+import uet.oop.bomberman.gui.Game;
 import uet.oop.bomberman.level.Level;
 import uet.oop.bomberman.entities.Character;
 
@@ -27,7 +28,7 @@ public class Board {
 
     private Camera camera;
 
-    public static final int DEFAULT_TIME = 180;
+    public static final int DEFAULT_TIME = 1;
 
     public Board() {
         level = new Level(this,1);
@@ -41,6 +42,7 @@ public class Board {
         if (!(level.getLevel() + 1 > Level.MAX_LEVEL)) {
             clear();
             level = new Level(this, level.getLevel() + 1);
+            BombermanGame.TIME_INIT = 0;
             level.addEntity();
         }
     }
@@ -184,6 +186,13 @@ public class Board {
         }
         e = level.getTileAt(x, y);
         return e;
+    }
+
+    public boolean hasEnemies() {
+        for (int i = 0; i < characters.size(); i++) {
+            if (characters.get(i) instanceof Enemy) return true;
+        }
+        return false;
     }
 
 }

@@ -1,14 +1,16 @@
 package uet.oop.bomberman;
 
+import javafx.animation.AnimationTimer;
 import javafx.application.Application;
-import javafx.event.EventHandler;
+import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import uet.oop.bomberman.gui.Game;
 import uet.oop.bomberman.gui.Menu;
 import uet.oop.bomberman.sounds.Sound;
+
+import java.io.InputStream;
 
 public class BombermanGame extends Application {
 
@@ -18,12 +20,13 @@ public class BombermanGame extends Application {
 
     public static final int HEIGHT = 13;
 
+    public static int TIME_INIT;
+
     private Menu menu;
 
     private Game game;
 
-    private Stage gameStage;
-
+    public static Stage gameStage;
 
     public static void main(String[] args) {
         Application.launch(BombermanGame.class);
@@ -35,59 +38,82 @@ public class BombermanGame extends Application {
         menu = new Menu();
         game = new Game();
 
-        stage = menu.getMenuStage();
+        stage.setScene(menu.getMenuScene());
+//        this.stage = stage;
         gameStage = stage;
         stage.show();
-        menu.getStartButton().setOnMouseClicked(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent mouseEvent) {
-                Sound.playSound("menuClicked");
-                Sound.stopMenuMusic();
-                gameStage.setScene(game.getGameScene());
-                gameStage.show();
-                game.loop();
-                game.handleEvent();
-            }
+
+        menu.getStartButton().setOnMouseClicked(mouseEvent -> {
+            Sound.playSound("menuClicked");
+            Sound.stopMenuMusic();
+            loop();
+            game.handleEvent();
+            gameStage.show();
         });
 
-        menu.getStartButton().setOnMouseEntered(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent mouseEvent) {
-                Sound.playSound("menuEntered");
-                menu.getStartButton().setGraphic(new ImageView(new Image("/buttons/start2.png")));
-            }
+        menu.getStartButton().setOnMouseEntered(mouseEvent -> {
+            Sound.playSound("menuEntered");
+            menu.getStartButton().setGraphic(new ImageView(new Image("/buttons/start2.png")));
         });
 
-        menu.getStartButton().setOnMouseExited(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent mouseEvent) {
-                menu.getStartButton().setGraphic(new ImageView(new Image("/buttons/start1.png")));
-            }
+        menu.getStartButton().setOnMouseExited(mouseEvent -> menu.getStartButton().setGraphic(new ImageView(new Image("/buttons/start1.png"))));
+
+        menu.getExitButton().setOnMouseClicked(mouseEvent -> {
+            Sound.playSound("menuClicked");
+            System.out.println("Exit");
+            System.exit(0);
         });
 
-        menu.getExitButton().setOnMouseClicked(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent mouseEvent) {
-                Sound.playSound("menuClicked");
-                System.out.println("Exit");
-                System.exit(0);
-            }
+        menu.getExitButton().setOnMouseEntered(mouseEvent -> {
+            Sound.playSound("menuEntered");
+            menu.getExitButton().setGraphic(new ImageView(new Image("/buttons/exit2.png")));
         });
 
-        menu.getExitButton().setOnMouseEntered(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent mouseEvent) {
-                Sound.playSound("menuEntered");
-                menu.getExitButton().setGraphic(new ImageView(new Image("/buttons/exit2.png")));
-            }
-        });
+        menu.getExitButton().setOnMouseExited(mouseEvent -> menu.getExitButton().setGraphic(new ImageView(new Image("/buttons/exit1.png"))));
+    }
 
-        menu.getExitButton().setOnMouseExited(new EventHandler<MouseEvent>() {
+    public void loop() {
+        AnimationTimer timer = new AnimationTimer() {
             @Override
-            public void handle(MouseEvent mouseEvent) {
-                menu.getExitButton().setGraphic(new ImageView(new Image("/buttons/exit1.png")));
+            public void handle(long l) {
+                if (TIME_INIT < 3 * 60) {
+                    gameStage.setScene(game.getLevelScene());
+                    TIME_INIT++;
+                } else if ((game.getBoard().getTime() == 0 && game.getBoard().hasEnemies())
+                        || (game.getBoard().getBomber().getTimeAfterKill() == 0) && game.getBoard().getBomber().getLive() == 0) {
+                    this.stop();
+                    game.lose();
+                    gameStage.setScene(game.getEndScene());
+                    game.getBackToMenuButton().setOnMouseClicked(mouseEvent -> {
+                        Sound.playSound("menuClicked");
+                        TIME_INIT = 0;
+                        BombermanGame.this.start(gameStage);
+                    });
+                    game.getBackToMenuButton().setOnMouseEntered(mouseEvent -> {
+                        Sound.playSound("menuEntered");
+                        game.getBackToMenuButton().setGraphic(new ImageView(new Image("/buttons/continue2.png")));
+                    });
+
+                    game.getBackToMenuButton().setOnMouseExited(mouseEvent -> game.getBackToMenuButton().setGraphic(new ImageView(new Image("/buttons/continue1.png"))));
+                } else {
+                    gameStage.setScene(game.getGameScene());
+                    game.render();
+                    game.update();
+                }
             }
-        });
+        };
+        timer.start();
+    }
+
+    public static Button createButton(String path, int x, int y, String backgroundColor) {
+        InputStream inputStream = BombermanGame.class.getResourceAsStream(path);
+        javafx.scene.image.Image image = new Image(inputStream);
+        ImageView imageView = new ImageView(image);
+        Button button = new Button("", imageView);
+        button.setLayoutX(x);
+        button.setLayoutY(y);
+        button.setStyle("-fx-background-color: #" + backgroundColor + "; ");
+        return button;
     }
 
 }

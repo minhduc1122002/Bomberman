@@ -22,16 +22,29 @@ public class Bomber extends Character {
 
     private int animate = 0;
 
+    private int live;
+
     public Bomber(int x, int y, Image img, Board board) {
         super( x, y, img, board);
         direction = -1;
         alive = true;
+        live = 3;
     }
+
+    public int getLive() {
+        return live;
+    }
+
+    public int getTimeAfterKill() {
+        return timeAfterKill;
+    }
+
 
     @Override
     public void kill() {
         if (!alive) return;
         alive = false;
+        live--;
         Sound.playSound("lifeLost");
     }
 

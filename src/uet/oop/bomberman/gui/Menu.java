@@ -6,6 +6,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
+import uet.oop.bomberman.BombermanGame;
 import uet.oop.bomberman.graphics.Sprite;
 
 import java.io.InputStream;
@@ -24,24 +25,13 @@ public class Menu {
         menuScene = new Scene(menuPane, WIDTH * Sprite.SCALED_SIZE, HEIGHT * Sprite.SCALED_SIZE);
         menuStage = new Stage();
         menuStage.setScene(menuScene);
-        Image back = new Image("/background/background.png");
-        BackgroundImage backMenu = new BackgroundImage(back, null, null, null, null);
+        Image background = new Image("/background/background.png");
+        BackgroundImage backMenu = new BackgroundImage(background, null, null, null, null);
         menuPane.setBackground(new Background(backMenu));
-        startButton = createButton("/buttons/start1.png", 200, 300);
+        startButton = BombermanGame.createButton("/buttons/start1.png", 200, 300, "ff90a3");
         menuPane.getChildren().add(startButton);
-        exitButton = createButton("/buttons/exit1.png", 200, 400);
+        exitButton = BombermanGame.createButton("/buttons/exit1.png", 200, 400, "ff90a3");
         menuPane.getChildren().add(exitButton);
-    }
-
-    public Button createButton(String path, int x, int y) {
-        InputStream inputStream = getClass().getResourceAsStream(path);
-        javafx.scene.image.Image image = new Image(inputStream);
-        ImageView imageView = new ImageView(image);
-        Button button = new Button("", imageView);
-        button.setLayoutX(x);
-        button.setLayoutY(y);
-        button.setStyle("-fx-background-color: #ff90a3; ");
-        return button;
     }
 
     public Stage getMenuStage() {
@@ -56,4 +46,7 @@ public class Menu {
         return exitButton;
     }
 
+    public Scene getMenuScene() {
+        return menuScene;
+    }
 }
