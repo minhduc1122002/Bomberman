@@ -7,14 +7,15 @@ import uet.oop.bomberman.BombermanGame;
 import uet.oop.bomberman.entities.Entity;
 import uet.oop.bomberman.entities.bomb.Flame;
 import uet.oop.bomberman.entities.enemy.Kondoria;
+import uet.oop.bomberman.entities.enemy.Pontan;
 import uet.oop.bomberman.graphics.Sprite;
 
 import java.util.ArrayList;
 
 public class Brick extends Tile {
 
-    public static ArrayList<Integer> Xgachvo = new ArrayList();
-    public static ArrayList<Integer> Ygachvo = new ArrayList();
+    public static ArrayList<Integer> brokenBrickX = new ArrayList();
+    public static ArrayList<Integer> brokenBrickY = new ArrayList();
 
     private int animate = 0;
 
@@ -29,12 +30,12 @@ public class Brick extends Tile {
         this.below = below;
     }
 
-    public static void addXgachvo(int x) {
-        Xgachvo.add(x);
+    public static void addBrokenBrickX(int x) {
+        brokenBrickX.add(x);
     }
 
-    public static void addYgachvo(int y) {
-        Ygachvo.add(y);
+    public static void addBrokenBrickY(int y) {
+        brokenBrickY.add(y);
 
     }
 
@@ -67,11 +68,14 @@ public class Brick extends Tile {
     @Override
     public boolean collide(Entity e) {
         if (e instanceof Flame) {
-            addXgachvo(x / Sprite.SCALED_SIZE);
-            addYgachvo(y / Sprite.SCALED_SIZE);
+            addBrokenBrickX(x / Sprite.SCALED_SIZE);
+            addBrokenBrickY(y / Sprite.SCALED_SIZE);
             isBroken = true;
         }
         if (e instanceof Kondoria) {
+            return false;
+        }
+        if (e instanceof Pontan) {
             return false;
         }
         return true;

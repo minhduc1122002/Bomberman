@@ -18,6 +18,7 @@ public class SpeedItem extends Item {
             Sound.playSound("poweredUp");
             int newSpeed = getBoard().getBomber().getSpeed() + 1;
             getBoard().getBomber().setSpeed(newSpeed);
+            Board.BOMBER_SPEED++;
             setPoweredUp(true);
             remove = true;
         }

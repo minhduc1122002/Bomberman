@@ -2,6 +2,7 @@ package uet.oop.bomberman.entities;
 
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.shape.Rectangle;
 import uet.oop.bomberman.Board;
@@ -14,11 +15,11 @@ import uet.oop.bomberman.sounds.Sound;
 
 public class Bomber extends Character {
 
-    private int flameLength = 1;
+    private int flameLength;
 
-    private int bombRate = 1;
+    private int bombRate;
 
-    private int speed = 4;
+    private int speed;
 
     private int animate = 0;
 
@@ -29,6 +30,9 @@ public class Bomber extends Character {
         direction = -1;
         alive = true;
         live = 3;
+        this.flameLength = Board.FLAME_LENGTH;
+        this.bombRate = Board.BOMB_RATE;
+        this.speed = Board.BOMBER_SPEED;
     }
 
     public int getLive() {
@@ -70,7 +74,7 @@ public class Bomber extends Character {
 
     @Override
     public Rectangle getBoundary() {
-        return new Rectangle(x + 4, y + 4, Sprite.SCALED_SIZE - 20, Sprite.SCALED_SIZE - 8);
+        return new Rectangle(x + 6, y + 6, Sprite.SCALED_SIZE - 24, Sprite.SCALED_SIZE - 12);
     }
 
     @Override
@@ -91,6 +95,12 @@ public class Bomber extends Character {
         x = Sprite.SCALED_SIZE;
         y = Sprite.SCALED_SIZE;
         setImg(Sprite.player_right.getFxImage());
+        speed = 3;
+        bombRate = 1;
+        flameLength = 1;
+        Board.BOMBER_SPEED = 3;
+        Board.BOMB_RATE = 1;
+        Board.FLAME_LENGTH = 1;
         alive = true;
         timeAfterKill = 40;
         direction = -1;
@@ -147,7 +157,7 @@ public class Bomber extends Character {
                     && !(getBoard().getEntityAt(tx, (int) (getBoundary().getY() + getBoundary().getHeight()) / Sprite.SCALED_SIZE, this).collide(this))) {
                 x += speed;
             } else {
-                x = (int) (tx * Sprite.SCALED_SIZE - getBoundary().getWidth() - 4 - 1);
+                x = (int) (tx * Sprite.SCALED_SIZE - getBoundary().getWidth() - 6 - 1);
             }
         } else if (direction == LEFT) {
             int tx = (int) (-speed + getBoundary().getX()) / Sprite.SCALED_SIZE;
@@ -155,7 +165,7 @@ public class Bomber extends Character {
                     && !(getBoard().getEntityAt(tx, (int) (getBoundary().getY() + getBoundary().getHeight()) / Sprite.SCALED_SIZE , this).collide(this))) {
                 x -= speed;
             } else {
-                x = (tx * Sprite.SCALED_SIZE + Sprite.SCALED_SIZE - 4);
+                x = (tx * Sprite.SCALED_SIZE + Sprite.SCALED_SIZE - 6);
             }
         } else if (direction == UP) {
             int ty = (int) (- speed + getBoundary().getY()) / Sprite.SCALED_SIZE;
@@ -163,7 +173,7 @@ public class Bomber extends Character {
                     && !(getBoard().getEntityAt((int) (getBoundary().getX() + getBoundary().getWidth()) / Sprite.SCALED_SIZE, ty, this).collide(this))) {
                 y -= speed;
             } else {
-                y = (int) (ty * Sprite.SCALED_SIZE + Sprite.SCALED_SIZE - 4);
+                y = (int) (ty * Sprite.SCALED_SIZE + Sprite.SCALED_SIZE - 6);
             }
         } else if (direction == DOWN) {
             int ty = (int) (speed + getBoundary().getY() + getBoundary().getHeight()) / Sprite.SCALED_SIZE;
@@ -171,26 +181,31 @@ public class Bomber extends Character {
                     && !(getBoard().getEntityAt((int) (getBoundary().getX() + getBoundary().getWidth()) / Sprite.SCALED_SIZE, ty, this).collide(this))) {
                 y += speed;
             } else {
-                y = (int) (ty * Sprite.SCALED_SIZE - getBoundary().getHeight() - 4 - 1);
+                y = (int) (ty * Sprite.SCALED_SIZE - getBoundary().getHeight() - 6 - 1);
             }
         }
     }
 
     public void eventHandler(KeyEvent event) {
+
         if (event.getEventType() == KeyEvent.KEY_PRESSED) {
             switch (event.getCode()) {
+                case UP:
                 case W: {
                     direction = UP;
                     break;
                 }
+                case DOWN:
                 case S: {
                     direction = DOWN;
                     break;
                 }
+                case LEFT:
                 case A: {
                     direction = LEFT;
                     break;
                 }
+                case RIGHT:
                 case D: {
                     direction = RIGHT;
                     break;
@@ -207,21 +222,25 @@ public class Bomber extends Character {
             }
         } else if (event.getEventType() == KeyEvent.KEY_RELEASED) {
             switch (event.getCode()) {
+                case UP:
                 case W: {
                     direction = -1;
                     setImg(Sprite.player_up.getFxImage());
                     break;
                 }
+                case DOWN:
                 case S: {
                     direction = -1;
                     setImg(Sprite.player_down.getFxImage());
                     break;
                 }
+                case LEFT:
                 case A: {
                     direction = -1;
                     setImg(Sprite.player_left.getFxImage());
                     break;
                 }
+                case RIGHT:
                 case D: {
                     direction = -1;
                     setImg(Sprite.player_right.getFxImage());

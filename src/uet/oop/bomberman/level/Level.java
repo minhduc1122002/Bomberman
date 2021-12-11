@@ -3,10 +3,7 @@ package uet.oop.bomberman.level;
 import javafx.scene.canvas.GraphicsContext;
 import uet.oop.bomberman.Board;
 import uet.oop.bomberman.entities.*;
-import uet.oop.bomberman.entities.enemy.Balloon;
-import uet.oop.bomberman.entities.enemy.Doll;
-import uet.oop.bomberman.entities.enemy.Kondoria;
-import uet.oop.bomberman.entities.enemy.Oneal;
+import uet.oop.bomberman.entities.enemy.*;
 import uet.oop.bomberman.entities.tiles.*;
 import uet.oop.bomberman.entities.tiles.items.BombItem;
 import uet.oop.bomberman.entities.tiles.items.FlameItem;
@@ -20,7 +17,7 @@ import java.io.FileReader;
 
 public class Level {
 
-    public static final int MAX_LEVEL = 2;
+    public static final int MAX_LEVEL = 4;
 
     private int width, height;
 
@@ -89,11 +86,6 @@ public class Level {
                                 new Portal(j * Sprite.SCALED_SIZE, i * Sprite.SCALED_SIZE, Sprite.portal.getFxImage(), board));
                         break;
                     }
-                    case '1': {
-                        tiles[i][j] = new Grass(j * Sprite.SCALED_SIZE, i * Sprite.SCALED_SIZE, Sprite.grass.getFxImage(), board);
-                        board.addCharacter(new Balloon(j * Sprite.SCALED_SIZE, i * Sprite.SCALED_SIZE, Sprite.balloom_left1.getFxImage(), board, 2));
-                        break;
-                    }
                     case 'f': {
                         tiles[i][j] = new Brick(j * Sprite.SCALED_SIZE, i * Sprite.SCALED_SIZE, Sprite.brick.getFxImage(), board,
                                 new FlameItem(j * Sprite.SCALED_SIZE, i * Sprite.SCALED_SIZE, Sprite.powerup_flames.getFxImage(), board));
@@ -109,6 +101,11 @@ public class Level {
                                 new SpeedItem(j * Sprite.SCALED_SIZE, i * Sprite.SCALED_SIZE, Sprite.powerup_speed.getFxImage(), board));
                         break;
                     }
+                    case '1': {
+                        tiles[i][j] = new Grass(j * Sprite.SCALED_SIZE, i * Sprite.SCALED_SIZE, Sprite.grass.getFxImage(), board);
+                        board.addCharacter(new Balloon(j * Sprite.SCALED_SIZE, i * Sprite.SCALED_SIZE, Sprite.balloom_left1.getFxImage(), board, 1));
+                        break;
+                    }
                     case '2': {
                         tiles[i][j] = new Grass(j * Sprite.SCALED_SIZE, i * Sprite.SCALED_SIZE, Sprite.grass.getFxImage(), board);
                         board.addCharacter(new Oneal(j * Sprite.SCALED_SIZE, i * Sprite.SCALED_SIZE, Sprite.balloom_left1.getFxImage(), board, 2));
@@ -122,6 +119,11 @@ public class Level {
                     case '4': {
                         tiles[i][j] = new Grass(j * Sprite.SCALED_SIZE, i * Sprite.SCALED_SIZE, Sprite.grass.getFxImage(), board);
                         board.addCharacter(new Doll(j * Sprite.SCALED_SIZE, i * Sprite.SCALED_SIZE, Sprite.balloom_left1.getFxImage(), board, 2));
+                        break;
+                    }
+                    case '5': {
+                        tiles[i][j] = new Grass(j * Sprite.SCALED_SIZE, i * Sprite.SCALED_SIZE, Sprite.grass.getFxImage(), board);
+                        board.addCharacter(new Pontan(j * Sprite.SCALED_SIZE, i * Sprite.SCALED_SIZE, Sprite.pontan_left1.getFxImage(), board, 2));
                         break;
                     }
                     default: {

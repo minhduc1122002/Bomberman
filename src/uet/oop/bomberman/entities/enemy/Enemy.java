@@ -16,21 +16,18 @@ public abstract class Enemy extends Character {
 
     protected int speed;
 
-    protected final double MAX_STEPS;
+    protected  int MAX_STEPS;
 
     protected AI ai;
 
-    protected final double rest;
-
-    protected double steps;
+    protected int steps;
 
     public static final int POINT = 10;
 
     public Enemy(int x, int y, Image img, Board board, int speed) {
         super(x, y, img, board);
         this.speed = speed;
-        MAX_STEPS = (int) (Sprite.SCALED_SIZE / speed);
-        rest = (MAX_STEPS - (int) MAX_STEPS) / MAX_STEPS;
+        MAX_STEPS = (Sprite.SCALED_SIZE / speed);
         steps = MAX_STEPS;
     }
 
@@ -44,6 +41,14 @@ public abstract class Enemy extends Character {
             e.printStackTrace();
             return -1;
         }
+    }
+
+    public void setSpeed(int speed) {
+        this.speed = speed;
+    }
+
+    public void setMAX_STEPS(int MAX_STEPS) {
+        this.MAX_STEPS = MAX_STEPS;
     }
 
     public Rectangle getBoundary() {

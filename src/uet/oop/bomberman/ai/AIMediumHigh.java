@@ -4,54 +4,42 @@ import uet.oop.bomberman.Board;
 import uet.oop.bomberman.entities.Bomber;
 import uet.oop.bomberman.entities.enemy.Enemy;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class AIMediumHigh extends AI {
-    Bomber _bomber;
-    Enemy _e;
-    Board _board;
+
+    protected Bomber bomber;
+    protected Enemy enemy;
+    protected Board board;
     int radius;
 
-    public AIMediumHigh(Bomber _bomber, Enemy _e, Board _board) {
-        this._bomber = _bomber;
-        this._e = _e;
-        this._board = _board;
+    public AIMediumHigh(Board board, Enemy e) {
+        this.bomber = board.getBomber();
+        this.enemy = e;
+        this.board = board;
     }
-    /**
-     * tính toán tọa độ bomber so với con eneamy
-     * @return hướn đi
-     */
 
     public int calculateColDirection() {
-        if(_bomber.getXTile() < _e.getXTile())
+        if(bomber.getXTile() < enemy.getXTile())
             return 1;
-        else if(_bomber.getXTile() > _e.getXTile())
+        else if(bomber.getXTile() > enemy.getXTile())
             return 0;
 
         return -1;
     }
 
     public int calculateRowDirection() {
-        if(_bomber.getYTile() < _e.getYTile())
+        if(bomber.getYTile() < enemy.getYTile())
             return 2;
-        else if(_bomber.getYTile() > _e.getYTile())
+        else if(bomber.getYTile() > enemy.getYTile())
             return 3;
         return -1;
     }
 
-    /**    x1 x2 x3
-     *   y1   3  2  1
-     *   y2   4  e  0
-     *   y3   5  6  7
-     * @param Xb toa do x bom
-     * @param Yb toa do y bom
-     * @return vị chí của bọm trong khu vực dò của enenmy
-     * @return -1 nếu không thuộc phạm vi dò
-     */
-
     public int detectBombinRanger(int  Xb  ,int  Yb ){
-        radius = _bomber.getFlameLength();
-        int Xe = this._e.getXTile();
-        int Ye = this._e.getYTile();
+        radius = bomber.getFlameLength();
+        int Xe = this.enemy.getXTile();
+        int Ye = this.enemy.getYTile();
         // ngang
         if ( Yb == Ye ){
             //  bom o ben phai
@@ -107,18 +95,18 @@ public class AIMediumHigh extends AI {
                 return 5; // trai duoi
             }
         }
+        if (Xe == Xb && Yb == Ye) {
+            return 8;
+        }
         // khong co bom thi
         //   System.out.println("ko co");
         return -1;
     }
 
-
-
-
     @Override
     public int calculateDirection() {
-        int Xe = this._e.getXTile();
-        int Ye = this._e.getYTile();
+        int Xe = this.enemy.getXTile();
+        int Ye = this.enemy.getYTile();
 
         // top left
                /*
@@ -139,10 +127,10 @@ public class AIMediumHigh extends AI {
         int thread =0;
 
         // duyet toan bo list bom cua bang
-        for ( int i = 0 ; i < this._board.getBombs().size() ; i++){
+        for (int i = 0; i < this.board.getBombs().size() ; i++){
             // phat hiện bom
-            int Xb = this._board.getBombs().get(i).getXTile();
-            int Yb = this._board.getBombs().get(i).getYTile();
+            int Xb = this.board.getBombs().get(i).getXTile();
+            int Yb = this.board.getBombs().get(i).getYTile();
 
             // xét những quả bom trong miền sét
             if ( this.detectBombinRanger(Xb, Yb)!=-1 ){
@@ -193,6 +181,9 @@ public class AIMediumHigh extends AI {
                     case 7:
                         canGo[0]=canGo[3]= false;
                         break;
+                    case 8:
+                        Arrays.fill(canGo, false);
+                        break;
                 }
             }
 
@@ -232,8 +223,8 @@ public class AIMediumHigh extends AI {
 
         // trường hợp không có đường đi hợp lý
         // thì sẽ cho ramdo bừa
-        if (way.size() == 0 ){
-            return random.nextInt(4);
+        if (way.size() == 0 ) {
+            return -1;
         }
         // tồn tạ đường duy nhất
         if (way.size() == 1){

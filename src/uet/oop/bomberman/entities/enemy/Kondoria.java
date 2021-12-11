@@ -1,11 +1,7 @@
 package uet.oop.bomberman.entities.enemy;
 
-import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import uet.oop.bomberman.Board;
-import uet.oop.bomberman.BombermanGame;
-import uet.oop.bomberman.ai.AIAdvance;
-import uet.oop.bomberman.ai.AIMedium;
 import uet.oop.bomberman.ai.AIMediumHigh;
 import uet.oop.bomberman.entities.Bomber;
 import uet.oop.bomberman.entities.Entity;
@@ -14,13 +10,14 @@ import uet.oop.bomberman.graphics.Sprite;
 import uet.oop.bomberman.sounds.Sound;
 
 public class Kondoria extends Enemy {
+
     private int animate = 0;
 
     private int finalAnimation = 40;
 
     public Kondoria(int x, int y, Image img, Board board, int speed) {
         super(x, y, img, board, speed);
-        ai = new AIMediumHigh(getBoard().getBomber(), this, board);
+        ai = new AIMediumHigh(board, this);
         timeAfterKill = 20;
     }
 
@@ -82,7 +79,7 @@ public class Kondoria extends Enemy {
             if (!(getBoard().getEntityAt(tx, (int) (getBoundary().getY()) / Sprite.SCALED_SIZE, this).collide(this))
                     && !(getBoard().getEntityAt(tx, (int) (getBoundary().getY() + getBoundary().getHeight()) / Sprite.SCALED_SIZE, this).collide(this))) {
                 x += speed;
-                steps -= 1 + rest;
+                steps -= 1;
             } else {
                 x = (int) (tx * Sprite.SCALED_SIZE - getBoundary().getWidth() - 2 - 1);
                 steps = 0;
@@ -92,7 +89,7 @@ public class Kondoria extends Enemy {
             if (!(getBoard().getEntityAt(tx, (int) (getBoundary().getY()) / Sprite.SCALED_SIZE, this).collide(this))
                     && !(getBoard().getEntityAt(tx, (int) (getBoundary().getY() + getBoundary().getHeight()) / Sprite.SCALED_SIZE, this).collide(this))) {
                 x -= speed;
-                steps -= 1 + rest;
+                steps -= 1;
             } else {
                 x = (tx * Sprite.SCALED_SIZE + Sprite.SCALED_SIZE - 2);
                 steps = 0;
@@ -102,7 +99,7 @@ public class Kondoria extends Enemy {
             if (!(getBoard().getEntityAt((int) getBoundary().getX() / Sprite.SCALED_SIZE, ty, this).collide(this))
                     && !(getBoard().getEntityAt((int) (getBoundary().getX() + getBoundary().getWidth()) / Sprite.SCALED_SIZE, ty, this).collide(this))) {
                 y -= speed;
-                steps -= 1 + rest;
+                steps -= 1;
             } else {
                 y = (int) (ty * Sprite.SCALED_SIZE + Sprite.SCALED_SIZE - 2);
                 steps = 0;
@@ -112,7 +109,7 @@ public class Kondoria extends Enemy {
             if (!(getBoard().getEntityAt((int) getBoundary().getX() / Sprite.SCALED_SIZE, ty, this).collide(this))
                     && !(getBoard().getEntityAt((int) (getBoundary().getX() + getBoundary().getWidth()) / Sprite.SCALED_SIZE, ty, this).collide(this))) {
                 y += speed;
-                steps -= 1 + rest;
+                steps -= 1;
             } else {
                 y = (int) (ty * Sprite.SCALED_SIZE - getBoundary().getHeight() - 2 - 1);
                 steps = 0;
