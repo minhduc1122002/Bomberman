@@ -77,12 +77,16 @@ public class BombermanGame extends Application {
             @Override
             public void handle(long l) {
                 if (TIME_INIT < 3 * 60) {
+                    Sound.stopBGMusic();
+                    Sound.playStageStart();
                     gameStage.setScene(game.getLevelScene());
                     TIME_INIT++;
                 } else if ((game.getBoard().getTime() == 0 && game.getBoard().hasEnemies())
                         || (game.getBoard().getBomber().getTimeAfterKill() == 0) && game.getBoard().getBomber().getLive() == 0) {
                     this.stop();
                     game.lose();
+                    Sound.stopBGMusic();
+                    Sound.playGameOver();
                     gameStage.setScene(game.getEndScene());
                     game.getBackToMenuButton().setOnMouseClicked(mouseEvent -> {
                         Sound.playSound("menuClicked");
@@ -91,11 +95,13 @@ public class BombermanGame extends Application {
                     });
                     game.getBackToMenuButton().setOnMouseEntered(mouseEvent -> {
                         Sound.playSound("menuEntered");
+                        Sound.stopGameOver();
                         game.getBackToMenuButton().setGraphic(new ImageView(new Image("/buttons/continue2.png")));
                     });
 
                     game.getBackToMenuButton().setOnMouseExited(mouseEvent -> game.getBackToMenuButton().setGraphic(new ImageView(new Image("/buttons/continue1.png"))));
                 } else {
+                    Sound.playBGMusic();
                     gameStage.setScene(game.getGameScene());
                     game.render();
                     game.update();

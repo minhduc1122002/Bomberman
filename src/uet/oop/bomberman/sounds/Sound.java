@@ -11,6 +11,7 @@ public class Sound {
     private static Clip stageStart;
     private static Clip bgMusic;
     private static Clip menuMusic;
+    private static Clip gameOver;
 
     public static void playMenuMusic() {
         try {
@@ -24,13 +25,10 @@ public class Sound {
         }
     }
 
-    public static void stopMenuMusic() {
-        if (menuMusic.isRunning()) {
-            menuMusic.stop();
-        }
-    }
-
     public static void playStageStart(){
+        if (stageStart != null && stageStart.isRunning()) {
+            return;
+        }
         try{
             AudioInputStream in = AudioSystem.getAudioInputStream(new File("./res/audio/stageStart.wav"));
             stageStart = AudioSystem.getClip();
@@ -42,7 +40,10 @@ public class Sound {
         }
     }
 
-    private static void playBGMusic(){
+    public static void playBGMusic(){
+        if ((bgMusic != null && bgMusic.isRunning())) {
+            return;
+        }
         try{
             AudioInputStream in = AudioSystem.getAudioInputStream(new File("./res/audio/bgMusic.wav"));
             bgMusic = AudioSystem.getClip();
@@ -64,6 +65,37 @@ public class Sound {
         }
         catch(Exception e){
             e.printStackTrace();
+        }
+    }
+
+    public static void playGameOver() {
+        try{
+            AudioInputStream in = AudioSystem.getAudioInputStream(new File("./res/audio/gameOver.wav"));
+            gameOver = AudioSystem.getClip();
+            gameOver.open(in);
+            gameOver.start();
+            gameOver.loop(Clip.LOOP_CONTINUOUSLY);
+        }
+        catch(Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    public static void stopMenuMusic() {
+        if (menuMusic != null && menuMusic.isRunning()) {
+            menuMusic.stop();
+        }
+    }
+
+    public static void stopGameOver() {
+        if (gameOver != null && gameOver.isRunning()) {
+            gameOver.stop();
+        }
+    }
+
+    public static void stopBGMusic() {
+        if (bgMusic != null && bgMusic.isRunning()) {
+            bgMusic.stop();
         }
     }
 }

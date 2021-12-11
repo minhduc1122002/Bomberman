@@ -86,12 +86,10 @@ public class Bomb extends Entity {
         }
         if (e instanceof Flame) {
             timeToExplode = 0;
-            return true;
         }
         if (e instanceof Bomb) {
             if (((Bomb) e).isExploded) {
                 timeToExplode = 0;
-                return true;
             }
         }
         return true;
