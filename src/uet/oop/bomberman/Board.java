@@ -10,6 +10,7 @@ import uet.oop.bomberman.gui.Game;
 import uet.oop.bomberman.level.Level;
 import uet.oop.bomberman.entities.Character;
 
+import javax.sound.sampled.Port;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -33,6 +34,8 @@ public class Board {
     private int time;
 
     private Camera camera;
+
+    private boolean isWin = false;
 
     public static final int DEFAULT_TIME = 180;
 
@@ -71,6 +74,14 @@ public class Board {
 
     public int getTime() {
         return time;
+    }
+
+    public boolean isWin() {
+        return isWin;
+    }
+
+    public void setWin(boolean win) {
+        isWin = win;
     }
 
     public void addCharacter(Character character) {

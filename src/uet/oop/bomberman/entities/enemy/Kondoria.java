@@ -2,11 +2,13 @@ package uet.oop.bomberman.entities.enemy;
 
 import javafx.scene.image.Image;
 import uet.oop.bomberman.Board;
+import uet.oop.bomberman.BombermanGame;
 import uet.oop.bomberman.ai.AIMediumHigh;
 import uet.oop.bomberman.entities.Bomber;
 import uet.oop.bomberman.entities.Entity;
 import uet.oop.bomberman.entities.bomb.Flame;
 import uet.oop.bomberman.graphics.Sprite;
+import uet.oop.bomberman.gui.Game;
 import uet.oop.bomberman.sounds.Sound;
 
 public class Kondoria extends Enemy {
@@ -25,8 +27,9 @@ public class Kondoria extends Enemy {
     public void kill() {
         if (!alive) return;
         alive = false;
-        getBoard().addPoint(POINT * 3);
+        getBoard().addPoint(POINT * 4);
         Sound.playSound("enemyKilled");
+        Game.scorePlus.setText(String.valueOf(POINT * 4));
     }
 
     @Override
@@ -40,9 +43,12 @@ public class Kondoria extends Enemy {
                 setImg(Sprite.movingSprite(Sprite.mob_dead1, Sprite.mob_dead2, Sprite.mob_dead3, animate, 60).getFxImage());
                 finalAnimation--;
             } else {
+                Game.scorePlus.setText("");
                 remove();
             }
         }
+        Game.scorePlus.setLayoutX(x - getBoard().getCamera().getX() + Sprite.SCALED_SIZE / 3);
+        Game.scorePlus.setLayoutY(y - getBoard().getCamera().getY() + BombermanGame.GAME_OFFSET - Sprite.SCALED_SIZE / 3);
     }
 
     @Override

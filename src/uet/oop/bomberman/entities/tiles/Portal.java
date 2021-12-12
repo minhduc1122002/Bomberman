@@ -8,6 +8,7 @@ import uet.oop.bomberman.Board;
 import uet.oop.bomberman.BombermanGame;
 import uet.oop.bomberman.entities.Bomber;
 import uet.oop.bomberman.entities.Entity;
+import uet.oop.bomberman.level.Level;
 
 public class Portal extends Tile {
 
@@ -31,11 +32,11 @@ public class Portal extends Tile {
     @Override
     public boolean collide(Entity e) {
         if(e instanceof Bomber) {
-//            if(!getBoard().hasEnemies())
+            if(!getBoard().hasEnemies())
                 getBoard().nextLevel();
+            if (getBoard().getLevel().getLevel() == Level.MAX_LEVEL) getBoard().setWin(true);
             return true;
         }
-
         return false;
     }
 

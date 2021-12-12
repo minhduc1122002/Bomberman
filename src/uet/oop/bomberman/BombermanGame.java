@@ -8,6 +8,7 @@ import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 import uet.oop.bomberman.gui.Game;
 import uet.oop.bomberman.gui.Menu;
+import uet.oop.bomberman.level.Level;
 import uet.oop.bomberman.sounds.Sound;
 
 import java.io.InputStream;
@@ -39,7 +40,6 @@ public class BombermanGame extends Application {
         game = new Game();
 
         stage.setScene(menu.getMenuScene());
-//        this.stage = stage;
         gameStage = stage;
         stage.show();
 
@@ -97,6 +97,24 @@ public class BombermanGame extends Application {
                         Sound.playSound("menuEntered");
                         Sound.stopGameOver();
                         game.getBackToMenuButton().setGraphic(new ImageView(new Image("/buttons/continue2.png")));
+                    });
+
+                    game.getBackToMenuButton().setOnMouseExited(mouseEvent -> game.getBackToMenuButton().setGraphic(new ImageView(new Image("/buttons/continue1.png"))));
+                } else if(game.getBoard().isWin()) {
+                    this.stop();
+                    game.win();
+                    Sound.stopBGMusic();
+                    Sound.playGameOver();
+                    gameStage.setScene(game.getEndScene());
+                    game.getBackToMenuButton().setOnMouseClicked(mouseEvent -> {
+                        Sound.playSound("menuClicked");
+                        TIME_INIT = 0;
+                        BombermanGame.this.start(gameStage);
+                    });
+                    game.getBackToMenuButton().setOnMouseEntered(mouseEvent -> {
+                        Sound.playSound("menuEntered");
+                        Sound.stopGameOver();
+                        game.getBackToMenuButton().setGraphic(new ImageView(new Image("/buttons/continue3.png")));
                     });
 
                     game.getBackToMenuButton().setOnMouseExited(mouseEvent -> game.getBackToMenuButton().setGraphic(new ImageView(new Image("/buttons/continue1.png"))));

@@ -28,9 +28,9 @@ public class Menu {
         Image background = new Image("/background/background.png");
         BackgroundImage backMenu = new BackgroundImage(background, null, null, null, null);
         menuPane.setBackground(new Background(backMenu));
-        startButton = BombermanGame.createButton("/buttons/start1.png", 200, 300, "ff90a3");
+        startButton = BombermanGame.createButton("/buttons/start1.png", 400, 300, "7fd5f7");
         menuPane.getChildren().add(startButton);
-        exitButton = BombermanGame.createButton("/buttons/exit1.png", 200, 400, "ff90a3");
+        exitButton = BombermanGame.createButton("/buttons/exit1.png", 400, 400, "7fd5f7");
         menuPane.getChildren().add(exitButton);
     }
 

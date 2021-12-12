@@ -24,12 +24,19 @@ import java.util.List;
 import static uet.oop.bomberman.BombermanGame.*;
 
 public class Game {
+    public static final String pathFont1 = "file:font/04B_30__.TTF";
+    public static final String pathFont2 = "file:font/pixelmix.ttf";
+    public static final String pathFont3 = "file:font/pixelmix_bold.ttf";
+    public static Text scorePlus;
+
     private Board board;
     private Canvas canvas;
     private GraphicsContext gc;
+    private Group root;
     private Scene gameScene;
     private List<Text> textList;
     private Text score;
+
     private Text time;
     private Pane levelPane;
     private Scene levelScene;
@@ -51,14 +58,14 @@ public class Game {
         initScoreBar();
 
         // Tao root container
-        Group root = new Group();
+        root = new Group();
         root.getChildren().add(canvas);
         root.getChildren().addAll(textList);
 
         // Tao scene
         gameScene = new Scene(root);
 
-        backToMenuButton = BombermanGame.createButton("/buttons/continue1.png",150 , 400, "c0a2a8");
+        backToMenuButton = BombermanGame.createButton("/buttons/continue1.png",280 , 400, "4a0d4b");
     }
 
     public Scene getGameScene() {
@@ -106,11 +113,26 @@ public class Game {
         Image lose = new Image("/background/lose.png");
         BackgroundImage backLose = new BackgroundImage(lose, null, null, null, null);
         endPane.setBackground(new Background(backLose));
-        Text finalScore = new Text(490, 326, score.getText());
-        finalScore.setFont(Font.loadFont("file:font/04B_30__.TTF", 62));
+        Text finalScore = new Text(490, 230, score.getText());
+        finalScore.setFont(Font.loadFont(pathFont1, 62));
         finalScore.setFill(Color.web("0x818181",1.0));
         endPane.getChildren().add(finalScore);
 
+        endPane.getChildren().add(backToMenuButton);
+    }
+
+    public void win() {
+        endPane = new Pane();
+        endScene = new Scene(endPane, WIDTH * Sprite.SCALED_SIZE, HEIGHT * Sprite.SCALED_SIZE);
+        Image win = new Image("/background/lose.png");
+        BackgroundImage backWin = new BackgroundImage(win, null, null, null, null);
+        endPane.setBackground(new Background(backWin));
+        Text finalScore = new Text(490, 230, score.getText());
+        finalScore.setFont(Font.loadFont(pathFont1, 62));
+        finalScore.setFill(Color.web("0x818181",1.0));
+        endPane.getChildren().add(finalScore);
+
+        backToMenuButton = BombermanGame.createButton("/buttons/continue1.png",280 , 400, "ea6f9d");
         endPane.getChildren().add(backToMenuButton);
     }
 
@@ -122,28 +144,32 @@ public class Game {
 
     public void initScoreBar() {
         Text scoreField = new Text(30, 30, "Score: ");
-        scoreField.setFont(Font.loadFont("file:font/04B_30__.TTF", 20));
+        scoreField.setFont(Font.loadFont(pathFont2, 20));
         textList.add(scoreField);
 
-        score = new Text(130, 30, String.valueOf(board.getScore()));
-        score.setFont(Font.loadFont("file:font/04B_30__.TTF", 20));
+        score = new Text(125, 30, String.valueOf(board.getScore()));
+        score.setFont(Font.loadFont(pathFont2, 20));
         textList.add(score);
 
         Text timeField = new Text(200, 30, "Time:    /180");
-        timeField.setFont(Font.loadFont("file:font/04B_30__.TTF", 20));
+        timeField.setFont(Font.loadFont(pathFont2, 20));
         textList.add(timeField);
 
-        time = new Text(280, 30,  String.valueOf(board.getTime() / 60));
-        time.setFont(Font.loadFont("file:font/04B_30__.TTF", 20));
+        time = new Text(270, 30, String.valueOf(board.getTime() / 60));
+        time.setFont(Font.loadFont(pathFont2, 20));
         textList.add(time);
 
         Text liveField = new Text(450, 30, "Live:");
-        liveField.setFont(Font.loadFont("file:font/04B_30__.TTF", 20));
+        liveField.setFont(Font.loadFont(pathFont2, 20));
         textList.add(liveField);
 
-        live = new Text(530, 30,  "❤❤❤");
+        live = new Text(525, 30,  "❤❤❤");
         live.setFont(new Font("Arial", 25));
         textList.add(live);
+
+        scorePlus = new Text(0, 0, "");
+        scorePlus.setFont(Font.loadFont(pathFont2, 20));
+        textList.add(scorePlus);
     }
 
     public void initLevelBackground() {
@@ -153,8 +179,8 @@ public class Game {
         BackgroundImage backLevel = new BackgroundImage(levelImg, null, null, null, null);
         levelPane.setBackground(new Background(backLevel));
         level = new Text(498, 210, String.valueOf(board.getLevel().getLevel()));
-        level.setFont(Font.loadFont("file:font/04B_30__.TTF", 70));
-        level.setFill(Color.web("0xfedddc",1.0));
+        level.setFont(Font.loadFont(pathFont1, 70));
+        level.setFill(Color.web("0xffdfae",1.0));
         levelPane.getChildren().add(level);
     }
 
