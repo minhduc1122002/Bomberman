@@ -53,6 +53,7 @@ public class Board {
             level = new Level(this, level.getLevel() + 1);
             BombermanGame.TIME_INIT = 0;
             level.addEntity();
+            time = DEFAULT_TIME * 60;
         }
     }
 

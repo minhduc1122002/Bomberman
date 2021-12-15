@@ -25,8 +25,8 @@ import static uet.oop.bomberman.BombermanGame.*;
 
 public class Game {
     public static final String pathFont1 = "file:font/04B_30__.TTF";
-    public static final String pathFont2 = "file:font/pixelmix.ttf";
-    public static final String pathFont3 = "file:font/pixelmix_bold.ttf";
+    public static final String pathFont2 = "file:font/8-bitArcadeOut.ttf";
+    public static final String pathFont3 = "file:font/8-bitArcadeOut.ttf";
     public static Text scorePlus;
 
     private Board board;
@@ -169,6 +169,7 @@ public class Game {
 
         scorePlus = new Text(0, 0, "");
         scorePlus.setFont(Font.loadFont(pathFont2, 20));
+        scorePlus.setFill(Color.web("0xffffff",1.0));
         textList.add(scorePlus);
     }
 
