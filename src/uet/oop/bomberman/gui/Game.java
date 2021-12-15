@@ -26,7 +26,8 @@ import static uet.oop.bomberman.BombermanGame.*;
 public class Game {
     public static final String pathFont1 = "file:font/04B_30__.TTF";
     public static final String pathFont2 = "file:font/8-bitArcadeOut.ttf";
-    public static final String pathFont3 = "file:font/8-bitArcadeOut.ttf";
+    public static final String pathFont3 = "file:font/8-bitArcadeIn.ttf";
+    public static final int fontSize2 = 40;
     public static Text scorePlus;
 
     private Board board;
@@ -36,8 +37,10 @@ public class Game {
     private Scene gameScene;
     private List<Text> textList;
     private Text score;
+    private Text score2;
 
     private Text time;
+    private Text time2;
     private Pane levelPane;
     private Scene levelScene;
     Text level;
@@ -64,6 +67,7 @@ public class Game {
 
         // Tao scene
         gameScene = new Scene(root);
+        gameScene.setFill(Color.web("010017", 1.0));
 
         backToMenuButton = BombermanGame.createButton("/buttons/continue1.png",280 , 400, "4a0d4b");
     }
@@ -99,8 +103,11 @@ public class Game {
     public void update() {
         board.update();
         score.setText(String.valueOf(board.getScore()));
+        score2.setText(String.valueOf(board.getScore()));
         time.setText(String.valueOf(board.getTime() / 60));
+        time2.setText(String.valueOf(board.getTime() / 60));
         level.setText(String.valueOf(board.getLevel().getLevel()));
+        live.setFill(Color.web("a0331b", 1.0));
         if (board.getBomber().getLive() == 3) live.setText("❤❤❤");
         else if (board.getBomber().getLive() == 2) live.setText("❤❤");
         else if (board.getBomber().getLive() == 1) live.setText("❤");
@@ -143,32 +150,62 @@ public class Game {
     }
 
     public void initScoreBar() {
-        Text scoreField = new Text(30, 30, "Score: ");
-        scoreField.setFont(Font.loadFont(pathFont2, 20));
+        Text scoreField = new Text(30, 30, "Score ");
+        scoreField.setFont(Font.loadFont(pathFont2, fontSize2));
+        scoreField.setFill(Color.web("350924", 1.0));
         textList.add(scoreField);
 
-        score = new Text(125, 30, String.valueOf(board.getScore()));
-        score.setFont(Font.loadFont(pathFont2, 20));
+        Text scoreField2 = new Text(30, 30, "Score ");
+        scoreField2.setFont(Font.loadFont(pathFont3, fontSize2));
+        scoreField2.setFill(Color.web("007257", 1.0));
+        textList.add(scoreField2);
+
+        score = new Text(150, 30, String.valueOf(board.getScore()));
+        score.setFont(Font.loadFont(pathFont2, fontSize2));
+        score.setFill(Color.web("350924", 1.0));
         textList.add(score);
 
-        Text timeField = new Text(200, 30, "Time:    /180");
-        timeField.setFont(Font.loadFont(pathFont2, 20));
+        score2 = new Text(150, 30, String.valueOf(board.getScore()));
+        score2.setFont(Font.loadFont(pathFont3, fontSize2));
+        score2.setFill(Color.web("007257", 1.0));
+        textList.add(score2);
+
+        Text timeField = new Text(250, 30, "Time");
+        timeField.setFont(Font.loadFont(pathFont2, fontSize2));
+        timeField.setFill(Color.web("350924", 1.0));
         textList.add(timeField);
 
-        time = new Text(270, 30, String.valueOf(board.getTime() / 60));
-        time.setFont(Font.loadFont(pathFont2, 20));
+        Text timeField2 = new Text(250, 30, "Time");
+        timeField2.setFont(Font.loadFont(pathFont3, fontSize2));
+        timeField2.setFill(Color.web("007257", 1.0));
+        textList.add(timeField2);
+
+        time = new Text(345, 30, String.valueOf(board.getTime() / 60));
+        time.setFont(Font.loadFont(pathFont2, fontSize2));
+        time.setFill(Color.web("350924", 1.0));
         textList.add(time);
 
-        Text liveField = new Text(450, 30, "Live:");
-        liveField.setFont(Font.loadFont(pathFont2, 20));
+        time2 = new Text(345, 30, String.valueOf(board.getTime() / 60));
+        time2.setFont(Font.loadFont(pathFont3, fontSize2));
+        time2.setFill(Color.web("007257", 1.0));
+        textList.add(time2);
+
+        Text liveField = new Text(500, 30, "Live");
+        liveField.setFont(Font.loadFont(pathFont2, fontSize2));
+        liveField.setFill(Color.web("350924", 1.0));
         textList.add(liveField);
 
-        live = new Text(525, 30,  "❤❤❤");
+        Text liveField2 = new Text(500, 30, "Live");
+        liveField2.setFont(Font.loadFont(pathFont3, fontSize2));
+        liveField2.setFill(Color.web("007257", 1.0));
+        textList.add(liveField2);
+
+        live = new Text(590, 30,  "❤❤❤");
         live.setFont(new Font("Arial", 25));
         textList.add(live);
 
         scorePlus = new Text(0, 0, "");
-        scorePlus.setFont(Font.loadFont(pathFont2, 20));
+        scorePlus.setFont(Font.loadFont(pathFont3, fontSize2));
         scorePlus.setFill(Color.web("0xffffff",1.0));
         textList.add(scorePlus);
     }
