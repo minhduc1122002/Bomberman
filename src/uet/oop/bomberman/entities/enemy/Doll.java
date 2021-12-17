@@ -3,7 +3,7 @@ package uet.oop.bomberman.entities.enemy;
 import javafx.scene.image.Image;
 import uet.oop.bomberman.Board;
 import uet.oop.bomberman.BombermanGame;
-import uet.oop.bomberman.ai.AIAdvance;
+import uet.oop.bomberman.ai.AIBfs;
 import uet.oop.bomberman.entities.Bomber;
 import uet.oop.bomberman.entities.Entity;
 import uet.oop.bomberman.entities.bomb.Flame;
@@ -20,7 +20,7 @@ public class Doll extends Enemy {
 
     public Doll(int x, int y, Image img, Board board, int speed) {
         super(x, y, img, board, speed);
-        ai = new AIAdvance(getBoard().getBomber(), this, board);
+        ai = new AIBfs(getBoard().getBomber(), this, board);
         timeAfterKill = 20;
     }
 
@@ -29,7 +29,7 @@ public class Doll extends Enemy {
         if (!alive) return;
         alive = false;
         getBoard().addPoint(POINT * 2);
-        Sound.playSound("enemyKilled");
+        Sound.playSound("enemyKilled60");
         Game.scorePlus.setText(String.valueOf(POINT * 2));
     }
 

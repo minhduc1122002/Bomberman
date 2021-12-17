@@ -5,7 +5,7 @@ import javafx.scene.image.Image;
 
 import uet.oop.bomberman.Board;
 import uet.oop.bomberman.BombermanGame;
-import uet.oop.bomberman.ai.AILow;
+import uet.oop.bomberman.ai.AIRand;
 import uet.oop.bomberman.entities.Bomber;
 import uet.oop.bomberman.entities.Entity;
 import uet.oop.bomberman.entities.bomb.Flame;
@@ -21,7 +21,7 @@ public class Balloon extends Enemy {
 
     public Balloon(int x, int y, Image img, Board board, int speed) {
         super(x, y, img, board, speed);
-        ai = new AILow();
+        ai = new AIRand();
         timeAfterKill = 20;
     }
 
@@ -30,7 +30,7 @@ public class Balloon extends Enemy {
         if (!alive) return;
         alive = false;
         getBoard().addPoint(POINT);
-        Sound.playSound("enemyKilled");
+        Sound.playSound("enemyKilled60");
         Game.scorePlus.setText(String.valueOf(POINT));
     }
 

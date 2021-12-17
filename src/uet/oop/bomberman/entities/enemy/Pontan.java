@@ -3,7 +3,7 @@ package uet.oop.bomberman.entities.enemy;
 import javafx.scene.image.Image;
 import uet.oop.bomberman.Board;
 import uet.oop.bomberman.BombermanGame;
-import uet.oop.bomberman.ai.AIMediumHigh;
+import uet.oop.bomberman.ai.AIBombAvoiding;
 import uet.oop.bomberman.entities.Bomber;
 import uet.oop.bomberman.entities.Entity;
 import uet.oop.bomberman.entities.bomb.Flame;
@@ -19,7 +19,7 @@ public class Pontan extends Enemy {
 
     public Pontan(int x, int y, Image img, Board board, int speed) {
         super(x, y, img, board, speed);
-        ai = new AIMediumHigh(board, this);
+        ai = new AIBombAvoiding(board, this);
         timeAfterKill = 20;
     }
 

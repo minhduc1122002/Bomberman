@@ -15,7 +15,7 @@ public class Sound {
 
     public static void playMenuMusic() {
         try {
-            AudioInputStream in = AudioSystem.getAudioInputStream(new File("./res/audio/menuMusic.wav"));
+            AudioInputStream in = AudioSystem.getAudioInputStream(new File("./res/audio/menuMusic75.wav"));
             menuMusic = AudioSystem.getClip();
             menuMusic.open(in);
             menuMusic.start();
@@ -30,7 +30,7 @@ public class Sound {
             return;
         }
         try{
-            AudioInputStream in = AudioSystem.getAudioInputStream(new File("./res/audio/stageStart.wav"));
+            AudioInputStream in = AudioSystem.getAudioInputStream(new File("./res/audio/stageStart60.wav"));
             stageStart = AudioSystem.getClip();
             stageStart.open(in);
             stageStart.start();
@@ -45,7 +45,7 @@ public class Sound {
             return;
         }
         try{
-            AudioInputStream in = AudioSystem.getAudioInputStream(new File("./res/audio/bgMusic.wav"));
+            AudioInputStream in = AudioSystem.getAudioInputStream(new File("./res/audio/bgMusic80.wav"));
             bgMusic = AudioSystem.getClip();
             bgMusic.open(in);
             bgMusic.start();
@@ -70,7 +70,7 @@ public class Sound {
 
     public static void playGameOver() {
         try{
-            AudioInputStream in = AudioSystem.getAudioInputStream(new File("./res/audio/gameOver.wav"));
+            AudioInputStream in = AudioSystem.getAudioInputStream(new File("./res/audio/gameOver60.wav"));
             gameOver = AudioSystem.getClip();
             gameOver.open(in);
             gameOver.start();

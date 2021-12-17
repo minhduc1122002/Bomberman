@@ -49,7 +49,7 @@ public class Bomber extends Character {
         if (!alive) return;
         alive = false;
         live--;
-        Sound.playSound("lifeLost");
+        Sound.playSound("lifeLost60");
     }
 
     @Override
@@ -214,7 +214,7 @@ public class Bomber extends Character {
                     int xt = (int) ((double) x + Sprite.SCALED_SIZE / 2) / Sprite.SCALED_SIZE;
                     int yt = (int) ((double) y + Sprite.SCALED_SIZE / 2) / Sprite.SCALED_SIZE;
                     if (!(getBoard().getBombs().size() == bombRate)) {
-                        Sound.playSound("bombDropped");
+                        Sound.playSound("bombDroppedsm");
                         getBoard().addBomb(new Bomb(xt * Sprite.SCALED_SIZE , yt * Sprite.SCALED_SIZE, Sprite.bomb.getFxImage(),getBoard()));
                     }
                     break;

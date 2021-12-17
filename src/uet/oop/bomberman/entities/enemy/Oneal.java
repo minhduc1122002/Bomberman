@@ -1,11 +1,9 @@
 package uet.oop.bomberman.entities.enemy;
 
-import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import uet.oop.bomberman.Board;
 import uet.oop.bomberman.BombermanGame;
-import uet.oop.bomberman.ai.AIAdvance;
-import uet.oop.bomberman.ai.AIMedium;
+import uet.oop.bomberman.ai.AIFollow;
 import uet.oop.bomberman.entities.Bomber;
 import uet.oop.bomberman.entities.Entity;
 import uet.oop.bomberman.entities.bomb.Flame;
@@ -20,7 +18,7 @@ public class Oneal extends Enemy {
 
     public Oneal(int x, int y, Image img, Board board, int speed) {
         super(x, y, img, board, speed);
-        ai = new AIMedium(board, this);
+        ai = new AIFollow(board, this);
         timeAfterKill = 20;
     }
 
@@ -29,7 +27,7 @@ public class Oneal extends Enemy {
         if (!alive) return;
         alive = false;
         getBoard().addPoint(POINT * 3);
-        Sound.playSound("enemyKilled");
+        Sound.playSound("enemyKilled60");
         Game.scorePlus.setText(String.valueOf(POINT * 3));
     }
 
